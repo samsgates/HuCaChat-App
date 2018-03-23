@@ -11,7 +11,9 @@
 * Connect with the people around you.
 * Integrated login with social networking (Facebook, Twiter).
 
-![](image_1.png)![](image_2.png)
+![](image_1.png)
+
+![](image_2.png)
 
 ## Release History
 * 1.0
