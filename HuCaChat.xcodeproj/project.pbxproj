@@ -2229,10 +2229,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" \"CHATDEV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = asia.vitalify.demochat2303;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.vfahungnv.hucachat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5e91a359-2884-4842-9939-9a6f29d5288b";
-				PROVISIONING_PROFILE_SPECIFIER = demoChat2303;
+				PROVISIONING_PROFILE = "03a1e4f3-669b-43ef-97c4-90503fbd8adb";
+				PROVISIONING_PROFILE_SPECIFIER = hucachat_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -2247,7 +2247,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Demo_Chat_Dev.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Hung Nguyen (53AW353ZP8)";
-				DEVELOPMENT_TEAM = H4CR2L3EVK;
+				DEVELOPMENT_TEAM = WN9FR2WF7Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$PODS_CONFIGURATION_BUILD_DIR/EZAlertController\"",
@@ -2269,10 +2269,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-D\" \"CHATDEV\"";
-				PRODUCT_BUNDLE_IDENTIFIER = asia.vitalify.demochat2303;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.vfahungnv.hucachat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4d4ade11-ac41-4a2b-9b7c-9518b0b3a1dd";
-				PROVISIONING_PROFILE_SPECIFIER = demo_chat;
+				PROVISIONING_PROFILE = "ee85cc72-7935-42f8-87d3-8442dd37f7c0";
+				PROVISIONING_PROFILE_SPECIFIER = HuCaChat;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
