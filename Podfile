@@ -4,20 +4,20 @@ platform :ios, '8.0'
 
 def demo_chat_frameworks
     #start - add firebase
-    pod 'Firebase', '~> 3.17.0'
-    pod 'Firebase/Database', '~> 3.17.0'
-    pod 'Firebase/Auth', '~> 3.17.0'
-    pod 'Firebase/Storage', '~> 3.17.0'
-    pod 'Kingfisher', '~> 3.10.3'
+    pod 'Firebase' #, '~> 3.17.0'
+    pod 'Firebase/Database' #, '~> 3.17.0'
+    pod 'Firebase/Auth' #, '~> 3.17.0'
+    pod 'Firebase/Storage' #, '~> 3.17.0'
+    pod 'Kingfisher' #, '~> 3.10.3'
     #end
     
     #start - add google adMob
-    pod 'Firebase/AdMob', '~> 3.17.0'
+    pod 'Firebase/AdMob' #, '~> 3.17.0'
     #end
     
     #start - google analytics
     pod 'GoogleAnalytics', '~> 3.17.0'
-    pod 'Firebase/Core', '~> 3.17.0'
+    pod 'Firebase/Core' #, '~> 3.17.0'
     #end
     
     pod 'EZAlertController', '~> 3.2' #lib message
