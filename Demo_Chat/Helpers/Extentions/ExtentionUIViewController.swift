@@ -56,7 +56,7 @@ extension UIViewController {
     
     //MARK:- Set placeholder
     func setAttributedForTextField(txt: UITextField, placeholder: String, font: UIFont, delegate: UITextFieldDelegate) {
-        txt.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSForegroundColorAttributeName: UIColor.white.withAlphaComponent(0.5)])
+        txt.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white.withAlphaComponent(0.5)])
         txt.font = font
         txt.textColor = UIColor.white
         txt.delegate = delegate
@@ -80,7 +80,7 @@ extension UIViewController {
         }
         
         let textColor = isDarkBackground! ? UIColor.white : UIColor.black
-        let textAttributes = [NSForegroundColorAttributeName: textColor, NSFontAttributeName: Theme.shared.font_primaryRegular(size: .small)]
+        let textAttributes = [NSAttributedStringKey.foregroundColor: textColor, NSAttributedStringKey.font: Theme.shared.font_primaryRegular(size: .small)]
         
         vc.navigationController?.navigationBar.tintColor = textColor
         vc.navigationController?.navigationBar.titleTextAttributes = textAttributes

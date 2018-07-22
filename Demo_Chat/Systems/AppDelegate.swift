@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         let filePath = Bundle.main.path(forResource: GOOGLE_SERVER_FILE_NAME, ofType: "plist")!
         if let options = FIROptions(contentsOfFile: filePath) {
-            FIRApp.configure(with: options)
+            FirebaseApp.configure(with: options)
         }
         GMSServices.provideAPIKey(MAP_KEY)
     }

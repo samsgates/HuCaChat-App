@@ -23,7 +23,7 @@ public extension NSString {
   /**
   Convenient method for decoding a html encoded string
   */
-  func stringByDecodingURLFormat() -> String {
+  @objc func stringByDecodingURLFormat() -> String {
     let result = self.replacingOccurrences(of: "+", with:" ")
     return result.removingPercentEncoding!
   }
@@ -33,7 +33,7 @@ public extension NSString {
 
   @return key value dictionary with each parameter as an array
   */
-  func dictionaryFromQueryStringComponents() -> [String: AnyObject] {
+  @objc func dictionaryFromQueryStringComponents() -> [String: AnyObject] {
     var parameters = [String: AnyObject]()
     for keyValue in components(separatedBy: "&") {
       let keyValueArray = keyValue.components(separatedBy: "=")
@@ -49,15 +49,15 @@ public extension NSString {
 }
 
 open class Youtube: NSObject {
-  static let infoURL = "http://www.youtube.com/get_video_info?video_id="
-  static var userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4"
+  @objc static let infoURL = "http://www.youtube.com/get_video_info?video_id="
+  @objc static var userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/537.4"
   /**
   Method for retrieving the youtube ID from a youtube URL
 
   @param youtubeURL the the complete youtube video url, either youtu.be or youtube.com
   @return string with desired youtube id
   */
-    open static func youtubeIDFromYoutubeURL(_ youtubeURL: URL) -> String? {
+    @objc open static func youtubeIDFromYoutubeURL(_ youtubeURL: URL) -> String? {
         
         if let youtubeHost = youtubeURL.host,let youtubePathComponents:[String] = youtubeURL.pathComponents {
             let youtubeAbsoluteString = youtubeURL.absoluteString
@@ -83,7 +83,7 @@ open class Youtube: NSObject {
   @return dictionary with the available formats for the selected video
   
   */
-  open static func h264videosWithYoutubeID(_ youtubeID: String) -> [String: AnyObject]? {
+  @objc open static func h264videosWithYoutubeID(_ youtubeID: String) -> [String: AnyObject]? {
     let urlString = String(format: "%@%@", infoURL, youtubeID) as String
     let url = URL(string: urlString)!
     let request = NSMutableURLRequest(url: url)
@@ -143,7 +143,7 @@ open class Youtube: NSObject {
   @param completeBlock the block which is called on completion
 
   */
-  open static func h264videosWithYoutubeURL(_ youtubeURL: URL,completion: ((
+  @objc open static func h264videosWithYoutubeURL(_ youtubeURL: URL,completion: ((
     _ videoInfo: [String: AnyObject]?, _ error: NSError?) -> Void)?) {
       let priority = DispatchQueue.GlobalQueuePriority.background
       DispatchQueue.global(priority: priority).async {

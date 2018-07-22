@@ -110,8 +110,6 @@
 		483A34CA1F2AD695003C7747 /* PushModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483A34C81F2AD695003C7747 /* PushModel.swift */; };
 		483A34CC1F2B0E0B003C7747 /* MainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483A34CB1F2B0E0B003C7747 /* MainDB.swift */; };
 		483A34CD1F2B0E0B003C7747 /* MainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 483A34CB1F2B0E0B003C7747 /* MainDB.swift */; };
-		4841A4721F30557B002149FC /* HuCaChat_Dev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485603101F24F60700A62606 /* HuCaChat_Dev-Info.plist */; };
-		4841A4731F30557F002149FC /* HuCaChat_Release-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485603131F24F6AE00A62606 /* HuCaChat_Release-Info.plist */; };
 		484AC1F41F57EC3E0010B65E /* GoogleService-Info-Real.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484AC1F31F57EC3E0010B65E /* GoogleService-Info-Real.plist */; };
 		484AC1F51F57EC3E0010B65E /* GoogleService-Info-Real.plist in Resources */ = {isa = PBXBuildFile; fileRef = 484AC1F31F57EC3E0010B65E /* GoogleService-Info-Real.plist */; };
 		484AC1F61F57EE600010B65E /* CommonExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AA51391F41A2A6005E7FA8 /* CommonExtention.swift */; };
@@ -294,6 +292,8 @@
 		48E470AE1F6F86DB003AB9E4 /* TermViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E470AC1F6F86DB003AB9E4 /* TermViewController.swift */; };
 		48EF33831F1E654100160A6F /* AnalyticsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EF33821F1E654100160A6F /* AnalyticsHelper.swift */; };
 		48F4BB941F21036B00A29AD7 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F4BB931F21036B00A29AD7 /* NotificationHelper.swift */; };
+		48FE8B4821037FF200AA3DD3 /* HuCaChat_Release-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485603131F24F6AE00A62606 /* HuCaChat_Release-Info.plist */; };
+		48FE8B4921037FF600AA3DD3 /* HuCaChat_Dev-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485603101F24F60700A62606 /* HuCaChat_Dev-Info.plist */; };
 		48FF44E21F413DAD00A2852A /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FF44E11F413DAD00A2852A /* MovieCell.swift */; };
 		48FF44E31F413DAD00A2852A /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FF44E11F413DAD00A2852A /* MovieCell.swift */; };
 		776D757DDA86C470439D666E /* Pods_HuCaChat_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44CA3430773798BFCD311CD9 /* Pods_HuCaChat_Dev.framework */; };
@@ -1459,6 +1459,7 @@
 				48789CE01F24F291007D24CE /* gotham-medium.ttf in Resources */,
 				48CC55A81F58693C00ADB164 /* AMN.png in Resources */,
 				482998641F56CAD3009EEA7C /* local.db in Resources */,
+				48FE8B4921037FF600AA3DD3 /* HuCaChat_Dev-Info.plist in Resources */,
 				4812F0911F3A223F0039A011 /* ECDD.mp3 in Resources */,
 				4812F0891F3A223F0039A011 /* DM.mp3 in Resources */,
 				48CC55B01F58693C00ADB164 /* ECDD.png in Resources */,
@@ -1474,7 +1475,6 @@
 				4812F0971F3A223F0039A011 /* TMW.mp3 in Resources */,
 				48789CE51F24F291007D24CE /* GoogleService-Info.plist in Resources */,
 				4812F0791F3A223F0039A011 /* AMN.mp3 in Resources */,
-				4841A4721F30557B002149FC /* HuCaChat_Dev-Info.plist in Resources */,
 				4812F07F1F3A223F0039A011 /* CCNM.mp3 in Resources */,
 				4812F0771F3A223F0039A011 /* AMN.lrc in Resources */,
 				48CC55B41F58693C00ADB164 /* VTCS.png in Resources */,
@@ -1511,7 +1511,6 @@
 				F7B747471E50BAF200D93F2B /* gotham-bold.ttf in Resources */,
 				4808806D2064AFCB008DD271 /* Main.storyboard in Resources */,
 				484AC1F41F57EC3E0010B65E /* GoogleService-Info-Real.plist in Resources */,
-				4841A4731F30557F002149FC /* HuCaChat_Release-Info.plist in Resources */,
 				4812F0961F3A223F0039A011 /* TMW.mp3 in Resources */,
 				4897CC6B1E6FE4BF00D07D7B /* Assets.xcassets in Resources */,
 				4812F0781F3A223F0039A011 /* AMN.mp3 in Resources */,
@@ -1523,6 +1522,7 @@
 				48CC55AB1F58693C00ADB164 /* DADM.png in Resources */,
 				48CC55A91F58693C00ADB164 /* CCNM.png in Resources */,
 				4812F0981F3A223F0039A011 /* VTCS.lrc in Resources */,
+				48FE8B4821037FF200AA3DD3 /* HuCaChat_Release-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1588,7 +1588,9 @@
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/NCMB/NCMB.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
-				"${BUILT_PRODUCTS_DIR}/StarscreamSocketIO/StarscreamSocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-parser/youtube_parser.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1601,7 +1603,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NCMB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StarscreamSocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_parser.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1624,7 +1628,9 @@
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/NCMB/NCMB.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
-				"${BUILT_PRODUCTS_DIR}/StarscreamSocketIO/StarscreamSocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-parser/youtube_parser.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1637,7 +1643,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NCMB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StarscreamSocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_parser.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1652,7 +1660,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-HuCaChat_Release/Pods-HuCaChat_Release-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -1690,7 +1698,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-HuCaChat_Dev/Pods-HuCaChat_Dev-resources.sh",
-				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -2062,7 +2070,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = HuCaChat;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2103,7 +2111,7 @@
 				PROVISIONING_PROFILE = "828cad5b-ccb4-4112-8393-06d0d25493d8";
 				PROVISIONING_PROFILE_SPECIFIER = HuCaChat;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -2237,7 +2245,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = hucachat_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2276,7 +2284,7 @@
 				PROVISIONING_PROFILE = "03a1e4f3-669b-43ef-97c4-90503fbd8adb";
 				PROVISIONING_PROFILE_SPECIFIER = hucachat_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "Demo_Chat/SupportFiles/Demo_Chat-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

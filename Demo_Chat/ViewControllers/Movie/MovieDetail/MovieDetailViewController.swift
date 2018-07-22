@@ -50,7 +50,7 @@ class MovieDetailViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameDetailMovieScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -139,7 +139,7 @@ class MovieDetailViewController: BaseViewController {
         }
     }
     
-    func continueAction(notification: Notification) {
+    @objc func continueAction(notification: Notification) {
         if let userInfo = notification.userInfo as? [String:Any] {
             if let videoId = userInfo["videoId"] as? Int {
 //                isLogined = 1

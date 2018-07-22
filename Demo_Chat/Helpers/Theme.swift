@@ -24,7 +24,7 @@ enum FontSize: CGFloat {
 let fontBold = "Gotham Bold"
 let fontMedium = "Gotham Medium"
 
-class Theme: AnyObject {
+class Theme {
     static let shared = Theme()
     
     //MARK:- Font

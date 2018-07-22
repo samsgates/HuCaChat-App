@@ -71,7 +71,7 @@ class LoginViewController: BaseViewController {
         gesture.isEnabled = false
     }
     
-    func tappedScreen() {
+    @objc func tappedScreen() {
         txtEmail.resignFirstResponder()
         txtPassword.resignFirstResponder()
         gesture.isEnabled = false
@@ -100,13 +100,13 @@ class LoginViewController: BaseViewController {
                 #endif
             } else {
                 self.startLoading()
-                let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+                let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 self.firebaseLogin(credential: credential, provider: "Facebook")
             }
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "login", label: "facebook", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "login", label: "facebook")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "login", label: "facebook")
     }
     
     @IBAction func actTwitterLogin(_ sender: Any) {
@@ -120,16 +120,16 @@ class LoginViewController: BaseViewController {
             guard let secret = session?.authTokenSecret else { return }
             
             self.startLoading()
-            let credential = FIRTwitterAuthProvider.credential(withToken: token, secret: secret)
+            let credential = TwitterAuthProvider.credential(withToken: token, secret: secret)
             self.firebaseLogin(credential: credential, provider: "Twitter")
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "login", label: "twitter", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "login", label: "twitter")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "login", label: "twitter")
     }
     
-    func firebaseLogin(credential: FIRAuthCredential, provider: String) {
-        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+    func firebaseLogin(credential: AuthCredential, provider: String) {
+        Auth.auth().signInAndRetrieveData(with: <#T##AuthCredential#>, completion: <#T##AuthDataResultCallback?##AuthDataResultCallback?##(AuthDataResult?, Error?) -> Void#>) .signIn(with: credential, completion: { (user, error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
@@ -180,7 +180,7 @@ class LoginViewController: BaseViewController {
         })
     }
     
-    func addUserToDatabase(user: FIRUser, provider: String, displayName: String, email: String, imgURLStr: String) {
+    func addUserToDatabase(user: User, provider: String, displayName: String, email: String, imgURLStr: String) {
         let time_interval = "\(NSDate().timeIntervalSince1970)"
         let userInfo: [String:Any] = [
             "display_name": displayName,
@@ -204,7 +204,7 @@ class LoginViewController: BaseViewController {
             return;
         }
         
-        FIRAuth.auth()?.signIn(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (user, error) in
+        Auth.auth().signIn(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (user, error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
@@ -222,7 +222,7 @@ class LoginViewController: BaseViewController {
         })
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "login", label: "touch", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "login", label: "touch")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "login", label: "touch")
     }
     
     func isValidInput() -> (Bool, String) {
@@ -263,12 +263,12 @@ extension LoginViewController: UITextFieldDelegate {
         switch textField {
         case self.txtEmail:
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "login", label: "input_email", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "login", label: "input_email")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "login", label: "input_email")
             break
             
         default:
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "login", label: "input_password", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "login", label: "input_password")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "login", label: "input_password")
             break
         }
         

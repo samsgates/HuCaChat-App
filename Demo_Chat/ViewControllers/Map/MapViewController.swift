@@ -12,7 +12,7 @@ import SocketIO
 
 class MapViewController: BaseViewController {
     @IBOutlet weak var mapView: GMSMapView!
-    let socket = SocketIOClient(socketURL: URL(string: SERVER_URL)!, config: [.log(true), .forcePolling(true)])
+    let manager = SocketManager(socketURL: URL(string: SERVER_URL)!, config: [.log(true), .forcePolling(true), .compress])
     var markerDict:[String:GMSMarker] = [:]
     let locationHelper = LocationHelper()
     
@@ -40,7 +40,7 @@ class MapViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameMapScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -57,6 +57,7 @@ class MapViewController: BaseViewController {
     }
     
     func startSocketIO() {
+        let socket = self.manager.defaultSocket
         socket.on(clientEvent: .connect) { (data, ack) in
             #if DEBUG
                 print("Client connected")
@@ -140,7 +141,7 @@ extension MapViewController: LocationHelperDelegate {
         }
     }
     
-    func privateLocation() {
+    @objc func privateLocation() {
         guard let id = self.appDelegate.currUser?.id else { return }
         guard let displayName = self.appDelegate.currUser?.display_name else { return }
         self.socket.emit("location", ["\(id)_\(displayName)", 0, 0])

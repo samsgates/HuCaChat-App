@@ -90,11 +90,11 @@ class PageMenuViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameMovieScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: #imageLiteral(resourceName: "icon_search"), rightSelector: #selector(self.actSearch(btn:)), isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func actSearch(btn: UIButton) {
+    @objc func actSearch(btn: UIButton) {
         let searchMovieVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchMovieVC") as! SearchMovieViewController
         self.navigationController?.pushViewController(searchMovieVC, animated: false)
     }
@@ -142,7 +142,7 @@ class PageMenuViewController: BaseViewController {
         return movieVC
     }
 
-    func moveToDetailVCBy(_ notification: Notification) {
+    @objc func moveToDetailVCBy(_ notification: Notification) {
         guard let userInfo = notification.userInfo else {return}
         guard let movieId = userInfo["movieId"] as? Int else {return}
         
