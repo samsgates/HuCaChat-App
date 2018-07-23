@@ -63,7 +63,7 @@ class RightCell: SwipeCell {
         imgAvatar.clipsToBounds = true
     }
     
-    func tappedContentView(tap: UITapGestureRecognizer) {
+    @objc func tappedContentView(tap: UITapGestureRecognizer) {
         self.delegateRight?.tappedContentView(myIndex: self.myIndex)
     }
     

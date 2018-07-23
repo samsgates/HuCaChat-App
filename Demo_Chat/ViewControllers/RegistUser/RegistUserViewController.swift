@@ -72,14 +72,14 @@ class RegistUserViewController: BaseViewController {
         gesture.isEnabled = false
     }
     
-    func tappedScreen() {
+    @objc func tappedScreen() {
         txtEmail.resignFirstResponder()
         txtPassword.resignFirstResponder()
         gesture.isEnabled = false
     }
     
     @IBAction func actChangeAvatar(_ sender: Any) {
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "input_avatar")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "input_avatar")
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "input_avatar", value: nil)
         
         self.showCamera()
@@ -94,12 +94,12 @@ class RegistUserViewController: BaseViewController {
             return;
         }
         
-        FIRAuth.auth()?.createUser(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (user, error) in
+        Auth.auth().createUser(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (data, error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
-            } else if let user = user {
-                let updateUser = user.profileChangeRequest()
+            } else if let data = data {
+                let updateUser = data.user.createProfileChangeRequest()
                 updateUser.displayName = self.txtDisplayName.text
                 
                 self.uploadAvatarToFirebase(completionHandler: { (value) in
@@ -113,12 +113,12 @@ class RegistUserViewController: BaseViewController {
                     if let photoURL:URL = URL(string: photoStr) {
                         updateUser.photoURL = photoURL
                         
-                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user.uid , "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
+                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data.user.uid , "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
                         
                         let currInstallation: NCMBInstallation = NCMBInstallation.current()
                         self.appDelegate.handleInstallation(currInstallation: currInstallation)
                         
-                        self.addUserToDatabase(user: user, updateUser: updateUser, displayName: self.txtDisplayName.text!, email: self.txtEmail.text!, imgURLStr: photoURL.absoluteString)
+                        self.addUserToDatabase(user: data.user, updateUser: updateUser, displayName: self.txtDisplayName.text!, email: self.txtEmail.text!, imgURLStr: photoURL.absoluteString)
                     }
                 })
             }
@@ -150,7 +150,7 @@ class RegistUserViewController: BaseViewController {
         return (true, "")
     }
     
-    func addUserToDatabase(user: FIRUser, updateUser: FIRUserProfileChangeRequest, displayName: String, email: String, imgURLStr: String) {
+    func addUserToDatabase(user: User, updateUser: UserProfileChangeRequest, displayName: String, email: String, imgURLStr: String) {
         updateUser.commitChanges { (error) in
             if let error = error {
                 self.stopLoading()
@@ -185,17 +185,17 @@ extension RegistUserViewController: UITextFieldDelegate {
         switch textField {
         case self.txtDisplayName:
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "input_display_name", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "input_display_name")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "input_display_name")
             break
             
         case self.txtEmail:
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "input_email", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "input_email")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "input_email")
             break
             
         default:
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "input_password", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "input_password")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "input_password")
             break
         }
         
@@ -222,7 +222,7 @@ extension RegistUserViewController {
             let openCamera = UIAlertAction(title: NSLocalizedString("h_take_a_new_photo", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "take_a_new_photo", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "take_a_new_photo")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "take_a_new_photo")
                 
                 self.imagePicker?.sourceType = .camera
                 self.imagePicker?.isEditing = false
@@ -232,7 +232,7 @@ extension RegistUserViewController {
             let openPhotoLibrary = UIAlertAction(title: NSLocalizedString("h_choose_from_library", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "choose_from_library", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "choose_from_library")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "choose_from_library")
                 
                 self.imagePicker?.sourceType = .photoLibrary
                 self.imagePicker?.isEditing = false
@@ -242,7 +242,7 @@ extension RegistUserViewController {
             let cancel = UIAlertAction(title: NSLocalizedString("h_cancel", ""), style: .cancel, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "request_access", label: "cancel", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "request_access", label: "cancel")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "request_access", label: "cancel")
             })
             
             self.showAlertSheet(title: kAppName, msg: NSLocalizedString("h_please_choose", ""), actions: [cancel,openPhotoLibrary,openCamera])
@@ -314,11 +314,10 @@ extension RegistUserViewController: UINavigationControllerDelegate, UIImagePicke
     }
     
     func uploadAvatarToFirebase(completionHandler: @escaping(String) -> Void) {
-        if let data = self.imgDataSelected as? Data {
-            let metadata = FIRStorageMetadata()
+        if let imgData = self.imgDataSelected as Data? {
+            let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
-            self.storageLocal.child("user").child("\(NSDate()).jpg").put(data, metadata: metadata, completion: { (dataUpload, error) in
-                
+            self.storageLocal.child("user").child("\(NSDate()).jpg").putData(imgData, metadata: metadata, completion: { (metadata, error) in
                 // Up hình lên storage bị lỗi
                 if let error = error {
                     EZAlertController.alert(kAppName, message: error.localizedDescription)
@@ -330,11 +329,15 @@ extension RegistUserViewController: UINavigationControllerDelegate, UIImagePicke
                 }
                 
                 // Up hình thành công
-                if dataUpload != nil {
-                    if let urlAvatar = dataUpload?.downloadURL()?.absoluteString {
-                        completionHandler(urlAvatar)
+                metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                    if let error = error {
+                        EZAlertController.alert(kAppName, message: error.localizedDescription)
+                        completionHandler("")
+                        return
                     }
-                }
+                    let urlAvatar = url?.absoluteString ?? ""
+                    completionHandler(urlAvatar)
+                })
             })
         }
     }

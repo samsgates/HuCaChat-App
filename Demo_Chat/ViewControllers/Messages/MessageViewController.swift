@@ -126,7 +126,7 @@ class MessageViewController: BaseViewController {
         }
         
         isLoadingData = true
-        var dbRef: FIRDatabaseQuery!
+        var dbRef: DatabaseQuery!
         if let lastMessageKey = lastKey {
             dbRef = messageChannel.queryOrderedByKey().queryEnding(atValue: lastMessageKey).queryLimited(toLast: NUM_LIMIT + 1)
         } else {
@@ -157,7 +157,7 @@ class MessageViewController: BaseViewController {
         })
     }
     
-    func parseData(snap: FIRDataSnapshot) -> [Message]? {
+    func parseData(snap: DataSnapshot) -> [Message]? {
         if snap.children.allObjects.count == 0 {
             return nil
         }
@@ -165,7 +165,7 @@ class MessageViewController: BaseViewController {
         var result = [Message]()
         
         for messageObj in snap.children.allObjects {
-            guard let messageSnap = messageObj as? FIRDataSnapshot else { continue }
+            guard let messageSnap = messageObj as? DataSnapshot else { continue }
             guard let messageInfo = messageSnap.value as? [String:AnyObject] else { continue }
             
             if self.lastMessageKey == messageSnap.key {
@@ -246,16 +246,16 @@ class MessageViewController: BaseViewController {
     }
     
     // MARK:- Action method
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "back", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "back")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "back")
         
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func actWarning(btn: UIButton) {
+    @objc func actWarning(btn: UIButton) {
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "warning", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "warning")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "warning")
         if let user = self.receiverUser {
             EZAlertController.alert(kAppName, message: "\(NSLocalizedString("h_sms_block_user", "")) \(user.display_name)", buttons: [NSLocalizedString("h_cancel", ""), NSLocalizedString("h_block", "")]) { (alertAction, position) -> Void in
                 if position == 0 {
@@ -264,12 +264,12 @@ class MessageViewController: BaseViewController {
                     #endif
                     
                     AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "cancel_block", value: nil)
-                    AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "cancel_block")
+                    AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "cancel_block")
                 } else if position == 1 {
                     if let user = self.receiverUser {
                         self.updateBlockUser(blockID: user.id)
                         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "touch_block", value: nil)
-                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "touch_block")
+                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "touch_block")
                     }
                     
                 }

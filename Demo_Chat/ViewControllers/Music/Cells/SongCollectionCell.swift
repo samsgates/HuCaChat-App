@@ -38,7 +38,7 @@ class SongCollectionCell: UICollectionViewCell {
         lblSinger.text = songModel?.artist
     }
     
-    func changeSong(_ notification: Notification) {
+    @objc func changeSong(_ notification: Notification) {
         imgViewSong.layer.removeAllAnimations()
         if let userInfo = notification.userInfo {
             if let position = userInfo["position"] as? Int {
@@ -47,7 +47,7 @@ class SongCollectionCell: UICollectionViewCell {
         }
     }
     
-    func actRotateImage(_ notification: Notification) {
+    @objc func actRotateImage(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             if let playing = userInfo["playing"] as? Bool {
                 if playing {
@@ -65,7 +65,7 @@ class SongCollectionCell: UICollectionViewCell {
         }
     }
     
-    func continueRotate() {
+    @objc func continueRotate() {
         imgViewSong.rotate()
     }
 }

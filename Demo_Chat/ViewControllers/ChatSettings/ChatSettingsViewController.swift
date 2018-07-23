@@ -41,27 +41,27 @@ class ChatSettingsViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameChatSettingsScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
     @IBAction func changeReadReceipt(_ sender: UISwitch) {
         if sender.isOn {
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "chat_settings", label: "read_receipt_on", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "chat_settings", label: "read_receipt_on")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "chat_settings", label: "read_receipt_on")
         } else {
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "chat_settings", label: "read_receipt_off", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "chat_settings", label: "read_receipt_off")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "chat_settings", label: "read_receipt_off")
         }
     }
     
     @IBAction func changeLastSeen(_ sender: UISwitch) {
         if sender.isOn {
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "chat_settings", label: "last_seen_on", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "chat_settings", label: "last_seen_on")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "chat_settings", label: "last_seen_on")
         } else {
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "chat_settings", label: "last_seen_off", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "last_seen_off", label: "touch")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "last_seen_off", label: "touch")
         }
     }
 

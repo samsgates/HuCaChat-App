@@ -12,10 +12,10 @@ import Firebase
 
 class BaseViewController: UIViewController {
     
-    lazy var ref: FIRDatabaseReference = FIRDatabase.database().reference()
-    var peopleOfGeneralChannel: FIRDatabaseReference!
-    var messageChannel: FIRDatabaseReference!
-    let storageLocal = FIRStorage.storage().reference()
+    lazy var ref: DatabaseReference = Database.database().reference()
+    var peopleOfGeneralChannel: DatabaseReference!
+    var messageChannel: DatabaseReference!
+    let storageLocal = Storage.storage().reference()
     var keyboardHidden = true
     
     var enableSwipe: Bool = false {
@@ -25,12 +25,12 @@ class BaseViewController: UIViewController {
     }
     
     var currentuserID:String {
-        if let currentuserID = FIRAuth.auth()?.currentUser?.uid {
+        if let currentuserID = Auth.auth().currentUser?.uid {
             return currentuserID
         }
         
         do {
-            try FIRAuth.auth()?.signOut()
+            try Auth.auth().signOut()
         } catch _ as NSError {}
         return ""
     }
@@ -74,10 +74,10 @@ class BaseViewController: UIViewController {
         self.dismiss(animated: true, completion: {})
     }
     
-    func addUserInfo(user: FIRUser, userInfo: [String:Any], isDismiss: Bool) {
+    func addUserInfo(user: User, userInfo: [String:Any], isDismiss: Bool) {
         var flag = false
         peopleOfGeneralChannel.observeSingleEvent(of: .value, with: { (snap) in
-            if let users: [FIRDataSnapshot] = snap.children.allObjects as? [FIRDataSnapshot] {
+            if let users: [DataSnapshot] = snap.children.allObjects as? [DataSnapshot] {
                 if users.count > 0 {
                     for userSnap in users {
                         if userSnap.key == user.uid {
@@ -126,12 +126,11 @@ class BaseViewController: UIViewController {
     func createNotificationCenter() {
         NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyBoard(notification:) ), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyBoard(notification:)), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(LoginViewController.tapScreen), name: NSNotification.Name.init("closeKeyboard"), object: nil)
     }
     
     
-    func tapScreen() {
+    @objc func tapScreen() {
         if !keyboardHidden {
             self.view.endEditing(true)
         }
@@ -141,7 +140,7 @@ class BaseViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func willShowKeyBoard(notification : NSNotification){
+    @objc func willShowKeyBoard(notification : NSNotification){
         keyboardHidden = false
         let userInfo: NSDictionary! = notification.userInfo as NSDictionary!
         
@@ -153,7 +152,7 @@ class BaseViewController: UIViewController {
         handleKeyboardWillShow(duration: duration,keyBoardRect: keyboardFrame)
     }
     
-    func willHideKeyBoard(notification : NSNotification){
+    @objc func willHideKeyBoard(notification : NSNotification){
         keyboardHidden = true
         var userInfo: NSDictionary!
         userInfo = notification.userInfo as NSDictionary!
@@ -169,7 +168,7 @@ class BaseViewController: UIViewController {
     func handleKeyboardWillShow(duration: TimeInterval, keyBoardRect: CGRect) {}
     func handleKeyboardWillHide(duration: TimeInterval, keyBoardRect: CGRect) {}
     
-    func showNotification(notification: NSNotification) {
+    @objc func showNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             if let title = userInfo["title"], let subTitle = userInfo["subTitle"] {
                 CRNotifications.showNotification(type: .success, title: title as! String, message: subTitle as! String, dismissDelay: 4)
@@ -177,11 +176,11 @@ class BaseViewController: UIViewController {
         }
     }
     
-    func handleReachable() {
+    @objc func handleReachable() {
         CRNotifications.showNotification(type: .success, title: "", message: NSLocalizedString("h_connected", ""), dismissDelay: 4)
     }
     
-    func handleNotReachable() {
+    @objc func handleNotReachable() {
         CRNotifications.showNotification(type: .success, title: "", message: NSLocalizedString("h_lost_connection", ""), dismissDelay: 4)
         self.clearAllNotice()
     }

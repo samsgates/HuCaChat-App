@@ -129,14 +129,14 @@ class LoginViewController: BaseViewController {
     }
     
     func firebaseLogin(credential: AuthCredential, provider: String) {
-        Auth.auth().signInAndRetrieveData(with: <#T##AuthCredential#>, completion: <#T##AuthDataResultCallback?##AuthDataResultCallback?##(AuthDataResult?, Error?) -> Void#>) .signIn(with: credential, completion: { (user, error) in
+        Auth.auth().signInAndRetrieveData(with: credential, completion: { (data, error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
             } else {
                 if provider == "Facebook" {
-                    if let email = user?.email {
-                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user?.uid ?? "", "email": email, "pass": ""])
+                    if let email = data?.user.email {
+                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data?.user.uid ?? "", "email": email, "pass": ""])
                         
                         let currInstallation: NCMBInstallation = NCMBInstallation.current()
                         self.appDelegate.handleInstallation(currInstallation: currInstallation)
@@ -146,7 +146,7 @@ class LoginViewController: BaseViewController {
                             guard let userInfo = result as? [String: Any] else { return }
                             guard let name = userInfo["name"] as? String else { return }
                             guard let url = ((userInfo["picture"] as? [String: Any])?["data"] as? [String: Any])?["url"] as? String else { return }
-                            self.addUserToDatabase(user: user!, provider: provider, displayName: name, email: email, imgURLStr: url)
+                            self.addUserToDatabase(user: data!.user, provider: provider, displayName: name, email: email, imgURLStr: url)
                         })
                     }
                 } else if provider == "Twitter" {
@@ -154,25 +154,25 @@ class LoginViewController: BaseViewController {
                     var email = ""
                     var url = ""
                     
-                    if let displayNameStr = user?.displayName {
+                    if let displayNameStr = data?.user.displayName {
                         displayName = displayNameStr
-                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user?.uid ?? "", "email": displayName, "pass": ""])
+                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data?.user.uid ?? "", "email": displayName, "pass": ""])
                         
                         let currInstallation: NCMBInstallation = NCMBInstallation.current()
                         self.appDelegate.handleInstallation(currInstallation: currInstallation)
                     }
-                    if let emailStr = user?.email {
+                    if let emailStr = data?.user.email {
                         email = emailStr
                         Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user?.uid ?? "", "email": email, "pass": ""])
                     
                         let currInstallation: NCMBInstallation = NCMBInstallation.current()
                         self.appDelegate.handleInstallation(currInstallation: currInstallation)
                     }
-                    if let photoURL = user?.photoURL {
+                    if let photoURL = data?.user.photoURL {
                         url = photoURL.absoluteString
                     }
                     
-                    self.addUserToDatabase(user: user!, provider: provider, displayName: displayName, email: email, imgURLStr: url)
+                    self.addUserToDatabase(user: data!.user, provider: provider, displayName: displayName, email: email, imgURLStr: url)
                 } else {
                     self.stopLoading()
                 }

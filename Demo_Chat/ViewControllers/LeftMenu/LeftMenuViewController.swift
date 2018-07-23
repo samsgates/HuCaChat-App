@@ -73,7 +73,7 @@ class LeftMenuViewController: BaseViewController {
     
     func setupData() {
         // Lấy thông tin của tài khoản đang đăng nhập
-        if let curUser = FIRAuth.auth()?.currentUser {
+        if let curUser = Auth.auth().currentUser {
             self.ref.child("Users").child(curUser.uid).observeSingleEvent(of: .value , with: { (snap) in
                 if !(snap.value is NSNull) {
                     if let data = snap.value as? [String:AnyObject] {
@@ -89,18 +89,18 @@ class LeftMenuViewController: BaseViewController {
     
     @IBAction func actChangeAvatar(_ sender: Any) {
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_left_menu", label: "update_avatar", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_left_menu", label: "update_avatar")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_left_menu", label: "update_avatar")
         
         self.showCamera()
     }
 
     @IBAction func actLogout(_ sender: Any) {
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_left_menu", label: "logout", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_left_menu", label: "logout")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_left_menu", label: "logout")
         
         Helper.shared.removeUserDefault(key: kUserInfo)
         do {
-            try FIRAuth.auth()?.signOut()
+            try Auth.auth().signOut()
         } catch let signOutError as NSError {
             EZAlertController.alert(kAppName, message: signOutError.localizedDescription)
         }
@@ -121,7 +121,7 @@ extension LeftMenuViewController {
             let openCamera = UIAlertAction(title: "Take a new photo", style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_left_menu", label: "take_a_new_photo", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_left_menu", label: "take_a_new_photo")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_left_menu", label: "take_a_new_photo")
                 
                 self.imagePicker?.sourceType = .camera
                 self.imagePicker?.isEditing = false
@@ -131,7 +131,7 @@ extension LeftMenuViewController {
             let openPhotoLibrary = UIAlertAction(title: "Choose from Library", style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_left_menu", label: "choose_from_library", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_left_menu", label: "choose_from_library")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_left_menu", label: "choose_from_library")
                 
                 self.imagePicker?.sourceType = .photoLibrary
                 self.imagePicker?.isEditing = false
@@ -141,7 +141,7 @@ extension LeftMenuViewController {
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_left_menu", label: "cancel", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_left_menu", label: "cancel")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_left_menu", label: "cancel")
             })
             
             self.showAlertSheet(title: kAppName, msg: "", actions: [cancel,openPhotoLibrary,openCamera])
@@ -211,10 +211,10 @@ extension LeftMenuViewController : UINavigationControllerDelegate, UIImagePicker
     func closePickerImageView() {
         self.dismiss(animated: true, completion: {
             self.startLoading()
-            if let data = self.imgDataSelected as? Data {
-                let metadata = FIRStorageMetadata()
+            if let imgData = self.imgDataSelected as Data? {
+                let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                self.storageLocal.child("user").child("\(NSDate()).jpg").put(data, metadata: metadata, completion: { (dataUpload, error) in
+                self.storageLocal.child("user").child("\(NSDate()).jpg").putData(imgData, metadata: metadata, completion: { (metadata, error) in
                     
                     // Up hình lên storage bị lỗi
                     if let error = error {
@@ -226,14 +226,16 @@ extension LeftMenuViewController : UINavigationControllerDelegate, UIImagePicker
                     }
                     
                     // Up hình thành công
-                    if dataUpload != nil {
-                        if let urlAvatar = dataUpload?.downloadURL()?.absoluteString {
-                            if let currentUser:FIRUser = FIRAuth.auth()?.currentUser {
-                                self.updateAvatarForUserModel(uid: currentUser.uid, urlAvatar: urlAvatar)
-                            }
+                    metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                        if let error = error {
+                            EZAlertController.alert(kAppName, message: error.localizedDescription)
+                            return
                         }
-                        
-                    }
+                        let urlAvatar = url?.absoluteString ?? ""
+                        if let currentUser:User = Auth.auth().currentUser {
+                            self.updateAvatarForUserModel(uid: currentUser.uid, urlAvatar: urlAvatar)
+                        }
+                    })
                 })
             }
         })
