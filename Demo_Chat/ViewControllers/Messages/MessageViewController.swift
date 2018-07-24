@@ -42,7 +42,7 @@ class MessageViewController: BaseViewController {
     var lastMessageKey: String?
     var userAvtDict = Dictionary <String, String>()
     var receive_user = [String]()
-    var imgPickerVC: UIImagePickerController?
+    var imgPickerVC = UIImagePickerController()
     var flagLongPressGesture = 0
     var kReceiverId: String?
     var receiverUser: UserModel?
@@ -50,6 +50,7 @@ class MessageViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.enableSwipe = true
+        imgPickerVC.delegate = self
 //        self.startLoading()
         setupView()
         createNotificationCenter()
@@ -358,17 +359,15 @@ class MessageViewController: BaseViewController {
     }
     
     func showAlertPhoto() {
-        imgPickerVC = UIImagePickerController()
-        imgPickerVC?.delegate = self
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let openCamera = UIAlertAction(title: NSLocalizedString("h_take_a_new_photo", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "take_a_new_photo", value: nil)
                 AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "take_a_new_photo")
                 
-                self.imgPickerVC?.sourceType = .camera
-                self.imgPickerVC?.isEditing = true
-                self.present(self.imgPickerVC!, animated: true, completion: nil)
+                self.imgPickerVC.sourceType = .camera
+                self.imgPickerVC.isEditing = true
+                self.present(self.imgPickerVC, animated: true, completion: nil)
             })
             
             let openPhotoLibrary = UIAlertAction(title: NSLocalizedString("h_choose_from_library", ""), style: .default, handler: { (_) in
@@ -376,10 +375,10 @@ class MessageViewController: BaseViewController {
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "choose_from_library", value: nil)
                 AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "choose_from_library")
                 
-                self.imgPickerVC?.sourceType = .photoLibrary
-                self.imgPickerVC?.isEditing = true
-                self.imgPickerVC?.allowsEditing = true
-                self.present(self.imgPickerVC!, animated: true, completion: nil)
+                self.imgPickerVC.sourceType = .photoLibrary
+                self.imgPickerVC.isEditing = true
+                self.imgPickerVC.allowsEditing = true
+                self.present(self.imgPickerVC, animated: true, completion: nil)
             })
             
             let cancel = UIAlertAction(title: NSLocalizedString("h_cancel", ""), style: .cancel, handler: { (_) in
@@ -389,10 +388,10 @@ class MessageViewController: BaseViewController {
             })
             self.showAlertSheet(title: kAppName, msg: NSLocalizedString("h_please_choose", ""), actions: [cancel, openPhotoLibrary, openCamera])
         } else {
-            imgPickerVC?.sourceType = .photoLibrary
-            imgPickerVC?.isEditing = true
-            imgPickerVC?.allowsEditing = true
-            self.present(imgPickerVC!, animated: true, completion: nil)
+            imgPickerVC.sourceType = .photoLibrary
+            imgPickerVC.isEditing = true
+            imgPickerVC.allowsEditing = true
+            self.present(imgPickerVC, animated: true, completion: nil)
         }
     }
     
@@ -688,18 +687,25 @@ extension MessageViewController: DownloadPhotoOperationDelegate {
 
 // MARK:- UIImagePickerControllerDelegate
 extension MessageViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == (kUTTypeImage as String) {
-                if let imageUrl  = info[UIImagePickerControllerReferenceURL] as? NSURL {
+                if let imageUrl = info[UIImagePickerControllerReferenceURL] as? NSURL {
                     if imageUrl.path != nil {
                         self.getImageFromPhotoLibrary(info: info)
                     }
                 } else {
                     getImageFromTakePhoto(info: info)
                 }
+                imgPickerVC.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "image_picker", label: "cancel", value: nil)
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "image_picker", label: "cancel")
+        imgPickerVC.dismiss(animated: true, completion: nil)
     }
     
     func getImageFromPhotoLibrary(info: [String:AnyObject]) {
@@ -729,8 +735,9 @@ extension MessageViewController: UINavigationControllerDelegate, UIImagePickerCo
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
             let imgName = "\(NSDate()).jpg"
-            self.storageLocal.child("message").child(conversationKey).child(imgName).putData(imgData, metadata: metadata, completion: { (metadata, error) in
-                metadata?.storageReference?.downloadURL(completion: { (url, error) in
+            let fullRef = self.storageLocal.child("message").child(conversationKey).child(imgName)
+            fullRef.putData(imgData, metadata: metadata, completion: { (metadata, error) in
+                fullRef.downloadURL(completion: { (url, error) in
                     if let error = error {
                         EZAlertController.alert(kAppName, message: error.localizedDescription)
                         return
@@ -740,8 +747,6 @@ extension MessageViewController: UINavigationControllerDelegate, UIImagePickerCo
                 })
             })
         }
-        
-        imgPickerVC?.dismiss(animated: true, completion: nil)
     }
     
     func showAlertSavedImage() {

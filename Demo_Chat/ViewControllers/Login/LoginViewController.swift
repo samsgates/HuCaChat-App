@@ -211,7 +211,7 @@ class LoginViewController: BaseViewController {
             }
             
             if let data = data {
-                Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data.user.uid ?? "", "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
+                Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data.user.uid, "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
                 
                 let currInstallation: NCMBInstallation = NCMBInstallation.current()
                 self.appDelegate.handleInstallation(currInstallation: currInstallation)

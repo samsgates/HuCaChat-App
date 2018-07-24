@@ -260,7 +260,7 @@ extension CreateGroupViewController {
 
 extension CreateGroupViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     // Xử lý sự kiện khi đã chọn hình
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == (kUTTypeImage as String) {
                 
@@ -320,7 +320,8 @@ extension CreateGroupViewController: UINavigationControllerDelegate, UIImagePick
         if let imgData = self.imgDataSelected as Data? {
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
-            self.storageLocal.child("group").child("\(NSDate()).jpg").putData(imgData, metadata: metadata, completion: { (metadata, error) in
+            let fullRef = self.storageLocal.child("group").child("\(NSDate()).jpg")
+            fullRef.putData(imgData, metadata: metadata, completion: { (metadata, error) in
                 
                 // Up hình lên storage bị lỗi
                 if let error = error {
@@ -333,7 +334,7 @@ extension CreateGroupViewController: UINavigationControllerDelegate, UIImagePick
                 }
                 
                 // Up hình thành công
-                metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                fullRef.downloadURL(completion: { (url, error) in
                     if let error = error {
                         EZAlertController.alert(kAppName, message: error.localizedDescription)
                         completionHandler("")

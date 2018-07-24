@@ -25,12 +25,12 @@ class LeftMenuViewController: BaseViewController {
     var user:UserModel! {
         didSet {
             self.lblDisplayName.text = user.display_name
-            if let image = Helper.shared.getCachedImageForPath(fileName: "big_\(user.id).jpg") {
-                DispatchQueue.main.async {
-                    self.btnAvatar.setImage(image, for: .normal)
-                    self.imgBG.image = image
-                }
-            } else {
+//            if let image = Helper.shared.getCachedImageForPath(fileName: "big_\(user.id).jpg") {
+//                DispatchQueue.main.async {
+//                    self.btnAvatar.setImage(image, for: .normal)
+//                    self.imgBG.image = image
+//                }
+//            } else {
                 DispatchQueue.global(qos: .background).async { [weak self] () -> Void in
                     guard let strongSelf = self else {return }
                     
@@ -45,7 +45,7 @@ class LeftMenuViewController: BaseViewController {
                             }
                         }
                     }
-                }
+//                }
             }
         }
     }
@@ -156,7 +156,7 @@ extension LeftMenuViewController {
 
 extension LeftMenuViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     // Xử lý sự kiện khi đã chọn hình
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         if let mediaType = info[UIImagePickerControllerMediaType] as? String {
             if mediaType == (kUTTypeImage as String) {
                 
@@ -214,8 +214,8 @@ extension LeftMenuViewController : UINavigationControllerDelegate, UIImagePicker
             if let imgData = self.imgDataSelected as Data? {
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                self.storageLocal.child("user").child("\(NSDate()).jpg").putData(imgData, metadata: metadata, completion: { (metadata, error) in
-                    
+                let fullRef = self.storageLocal.child("user").child("\(NSDate()).jpg")
+                fullRef.putData(imgData, metadata: metadata, completion: { (metadata, error) in
                     // Up hình lên storage bị lỗi
                     if let error = error {
                         EZAlertController.alert(kAppName, message: error.localizedDescription)
@@ -226,7 +226,7 @@ extension LeftMenuViewController : UINavigationControllerDelegate, UIImagePicker
                     }
                     
                     // Up hình thành công
-                    metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                    fullRef.downloadURL(completion: { (url, error) in
                         if let error = error {
                             EZAlertController.alert(kAppName, message: error.localizedDescription)
                             return
