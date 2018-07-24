@@ -43,7 +43,7 @@ class ChatCell: UITableViewCell {
         imgAvatar.clipsToBounds = true
     }
     
-    func longPressOnMessage(longPress: UILongPressGestureRecognizer) {
+    @objc func longPressOnMessage(longPress: UILongPressGestureRecognizer) {
         if let delegate = self.delegateChat {
             delegate.longPressOnMessage(cell: self, longPress: longPress, message: message)
         }

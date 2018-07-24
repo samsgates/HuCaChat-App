@@ -49,7 +49,7 @@ class SearchMovieViewController: UIViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameSearchMovieScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -58,7 +58,7 @@ class SearchMovieViewController: UIViewController {
         self.perform(#selector(loadNextPage), with: self, afterDelay: 0.2)
     }
     
-    func loadNextPage() {
+    @objc func loadNextPage() {
         page += 1
         isLoading = true
         
@@ -95,7 +95,7 @@ extension SearchMovieViewController: UISearchResultsUpdating {
         }
     }
     
-    func searchMovie() {
+    @objc func searchMovie() {
         if searchText == "" {return}
         self.pleaseWait()
         self.isLoading = true

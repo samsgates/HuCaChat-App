@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SnapKit
 
 protocol BottomMenuViewDelegate: class {
     func didSelectedBtnHome(_: BottomMenuView!)
@@ -208,18 +209,18 @@ class BottomMenuView: UIView {
     }
     
     //MARK:- Handle event
-    func tappedBtnHome(btn: UIButton) {
+    @objc func tappedBtnHome(btn: UIButton) {
 //        let url = URL(string: "http://static.new.tuoitre.vn/tto/i/s626/2017/06/01/nguyen-xuan-phuc-jpg-1496283435.jpg")
 //        let str = url!.lastPathComponent
 //        print(str)
         self.delegate?.didSelectedBtnHome(self)
     }
     
-    func tappedBtnCalendar(btn: UIButton) {
+    @objc func tappedBtnCalendar(btn: UIButton) {
         self.delegate?.didSelectedBtnCalendar(self)
     }
     
-    func tappedBtnCenter(btn: UIButton) {
+    @objc func tappedBtnCenter(btn: UIButton) {
         if isShowSubButton {
             tappedScreen()
             return
@@ -230,15 +231,15 @@ class BottomMenuView: UIView {
         self.delegate?.didSelectedBtnCenter(self)
     }
     
-    func tappedBtnAlart(btn: UIButton) {
+    @objc func tappedBtnAlart(btn: UIButton) {
         self.delegate?.didSelectedBtnAlarm(self)
     }
     
-    func tappedBtnSetting(btn: UIButton) {
+    @objc func tappedBtnSetting(btn: UIButton) {
         self.delegate?.didSelectedBtnSetting(self)
     }
     
-    func tappedbtnContact(btn: UIButton) {
+    @objc func tappedbtnContact(btn: UIButton) {
         self.delegate?.didSelectedBtnContact(self)
         if isShowSubButton {
             tappedScreen()
@@ -246,7 +247,7 @@ class BottomMenuView: UIView {
         }
     }
     
-    func tappedBtnVideo(btn: UIButton) {
+    @objc func tappedBtnVideo(btn: UIButton) {
         self.delegate?.didSelectedBtnVideo(self)
         if isShowSubButton {
             tappedScreen()
@@ -254,7 +255,7 @@ class BottomMenuView: UIView {
         }
     }
     
-    func tappedBtnCamera(btn: UIButton) {
+    @objc func tappedBtnCamera(btn: UIButton) {
         self.delegate?.didSelectedBtnCamera(self)
         if isShowSubButton {
             tappedScreen()
@@ -262,7 +263,7 @@ class BottomMenuView: UIView {
         }
     }
     
-    func tappedBtnCheckIn(btn: UIButton) {
+    @objc func tappedBtnCheckIn(btn: UIButton) {
         self.delegate?.didSelectedBtnCheckIn(self)
         if isShowSubButton {
             tappedScreen()
@@ -270,7 +271,7 @@ class BottomMenuView: UIView {
         }
     }
     
-    func tappedBtnCheckOut(btn: UIButton) {
+    @objc func tappedBtnCheckOut(btn: UIButton) {
         self.delegate?.didSelectedBtnCheckOut(self)
         if isShowSubButton {
             tappedScreen()
@@ -413,7 +414,7 @@ class BottomMenuView: UIView {
         gesture.isEnabled = false
     }
     
-    func tappedScreen() {
+    @objc func tappedScreen() {
         hiddenSubButtons()
         isShowSubButton = false
         gesture.isEnabled = false

@@ -107,12 +107,12 @@ class HomeViewController: BaseViewController {
         hidingNavBarHelper = HidingNavBarHelper(viewController: self, scrollView: tableView)
     }
     
-    func refreshData() {
+    @objc func refreshData() {
         self.users.removeAll()
         let currentUserId = self.currentuserID
         self.ref.child("Users").observeSingleEvent(of: .value, with: { (snap) in
             if !(snap.value is NSNull) {
-                guard let userArr = snap.children.allObjects as? [FIRDataSnapshot] else { return }
+                guard let userArr = snap.children.allObjects as? [DataSnapshot] else { return }
                 for userSnap in userArr {
                     if userSnap.key == currentUserId { continue }
                     
@@ -256,12 +256,12 @@ class HomeViewController: BaseViewController {
         downloadPhotoQueue.addOperation(operation)
     }
 
-    func actLeftMenu(btn: UIBarButtonItem) {
+    @objc func actLeftMenu(btn: UIBarButtonItem) {
         self.revealViewController().revealToggle(btn)
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "left_menu", label: "left_menu_button", value: nil)
     }
     
-    func actRightMenu(btn: UIBarButtonItem) {
+    @objc func actRightMenu(btn: UIBarButtonItem) {
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "right_menu", label: "right_menu_button", value: nil)
         self.revealViewController().rightRevealToggle(btn)
     }
@@ -410,7 +410,7 @@ extension HomeViewController: ContactCellDelegate {
         })
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "chat", label: "start_chat", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "chat", label: "start_chat")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "chat", label: "start_chat")
     }
     
     func pushToChatDetails(roomKey: String, receiverUser: UserModel) {
@@ -435,7 +435,7 @@ extension HomeViewController: ContactCellDelegate {
     
     func createConversationWith(user: UserModel) {
         let currentUID = self.currentuserID
-        guard let currDisplayName = FIRAuth.auth()?.currentUser?.displayName else { return }
+        guard let currDisplayName = Auth.auth().currentUser?.displayName else { return }
         
         let newRoomChatRef = self.ref.child("Conversations").childByAutoId()
         let conversationData = [

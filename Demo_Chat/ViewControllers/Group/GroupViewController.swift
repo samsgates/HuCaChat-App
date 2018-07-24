@@ -101,7 +101,7 @@ class GroupViewController: BaseViewController {
                 
                 var numFinished = 0
                 for item in snap.children.allObjects {
-                    guard let recentSnap = item as? FIRDataSnapshot else { return }
+                    guard let recentSnap = item as? DataSnapshot else { return }
                     let conversationKey = recentSnap.value as! String
                     conversationsRef.child(conversationKey).observeSingleEvent(of: .value, with: { (conversationSnap) in
                         if let recentInfo = conversationSnap.value as? [String:AnyObject] {
@@ -123,7 +123,7 @@ class GroupViewController: BaseViewController {
         })
     }
     
-    func actAddGroup(btn: UIBarButtonItem) {
+    @objc func actAddGroup(btn: UIBarButtonItem) {
         let createGroupVC = self.storyboard?.instantiateViewController(withIdentifier: "CreateGroupVC") as! CreateGroupViewController
         self.navigationController?.pushViewController(createGroupVC, animated: true)
     }
@@ -254,7 +254,7 @@ extension GroupViewController: RecentGroupCellDelegate {
         self.pushToMessage(roomKey: recentChat.id)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "chat", label: "start_chat", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "chat", label: "start_chat")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "chat", label: "start_chat")
     }
     
     func pushToMessage(roomKey: String) {

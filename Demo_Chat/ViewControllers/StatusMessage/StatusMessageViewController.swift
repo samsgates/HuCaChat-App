@@ -52,14 +52,14 @@ class StatusMessageViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameStatusMessageScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         if status_old != tvStatusMessage.text  {
             self.ref.child("Users").child(self.currentuserID).child("status").setValue(tvStatusMessage.text)
         }
         _ = navigationController?.popViewController(animated: true)
     }
 
-    func tapReceived(tap: UITapGestureRecognizer) {
+    @objc func tapReceived(tap: UITapGestureRecognizer) {
         if tvStatusMessage.isFirstResponder && tap.view != tvStatusMessage {
             tvStatusMessage.resignFirstResponder()
         }

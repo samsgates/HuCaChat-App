@@ -213,7 +213,7 @@ open class SwipeCell: UITableViewCell {
     
     // MARK: - Handle gestures
     
-    func handlePanGestureRecognizer(_ gesture: UIPanGestureRecognizer) {
+    @objc func handlePanGestureRecognizer(_ gesture: UIPanGestureRecognizer) {
         if (shouldDrag == false || isExited == true) {
             return
         }

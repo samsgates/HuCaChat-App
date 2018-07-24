@@ -34,7 +34,7 @@ class PhotoChatCell: ChatCell {
         self.imgMessage.clipsToBounds = true
     }
     
-    func tappedMessageTypePhoto(tap: UITapGestureRecognizer) {
+    @objc func tappedMessageTypePhoto(tap: UITapGestureRecognizer) {
         self.delegate?.tappedMessageTypePhoto(cell: self, tap: tap)
     }
 

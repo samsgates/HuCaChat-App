@@ -158,7 +158,7 @@ class HCKaraokeLyricPlayerView: UIView {
         return reusedView!
     }
     
-    func handleAnimationAndShowLabel(_ timer: Timer) {
+    @objc func handleAnimationAndShowLabel(_ timer: Timer) {
         var isAllowedAnimation = true
         
         if let dataSource = self.dataSource {

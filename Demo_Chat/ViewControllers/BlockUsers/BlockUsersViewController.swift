@@ -51,7 +51,7 @@ class BlockUsersViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameBlockUsersScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -186,17 +186,17 @@ extension BlockUsersViewController: UITableViewDataSource {
                 #endif
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "block_users", label: "cancel_unblock", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "block_users", label: "cancel_unblock")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "block_users", label: "cancel_unblock")
             } else if position == 1 {
                 self.updateUnBlockUser(blockID: user.id)
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "block_users", label: "touch_unblock", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "block_users", label: "touch_unblock")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "block_users", label: "touch_unblock")
             }
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "block_users", label: "message_confirm_unblock", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "block_users", label: "message_confirm_unblock")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "block_users", label: "message_confirm_unblock")
     }
     
     func updateUnBlockUser(blockID: String) {

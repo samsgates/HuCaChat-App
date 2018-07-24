@@ -61,7 +61,7 @@ class NotificationCell: UITableViewCell {
         return title
     }
     
-    func tappedContentView(tap: UITapGestureRecognizer) {
+    @objc func tappedContentView(tap: UITapGestureRecognizer) {
         self.delegate?.tappedContentView(myIndex: self.myIndex)
     }
     

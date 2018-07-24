@@ -85,7 +85,7 @@ class MovieViewController: BaseViewController {
         self.perform(#selector(loadNextPage), with: self, afterDelay: 0.2)
     }
     
-    func loadNextPage() {
+    @objc func loadNextPage() {
         page += 1
         isLoading = true
         if let typeOfMovie = typeOfMovie {

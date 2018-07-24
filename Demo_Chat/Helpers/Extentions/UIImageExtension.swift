@@ -39,7 +39,7 @@ extension UIImageView {
     func rotate() {
         if self.layer.animation(forKey: "cdImage") == nil {
             let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-            rotateAnimation.toValue = M_PI * 2
+            rotateAnimation.toValue = Double.pi * 2
             rotateAnimation.duration = 13
             rotateAnimation.repeatCount = HUGE
             rotateAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)

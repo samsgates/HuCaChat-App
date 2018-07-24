@@ -54,12 +54,12 @@ class RightMenuViewController: BaseViewController {
         deleteUserInfo()
     }
     
-    func refreshData() {
+    @objc func refreshData() {
         self.users.removeAll()
         let currentUserId = self.currentuserID
         self.ref.child("Users").observeSingleEvent(of: .value, with: { (snap) in
             if !(snap.value is NSNull) {
-                guard let userArr = snap.children.allObjects as? [FIRDataSnapshot] else { return }
+                guard let userArr = snap.children.allObjects as? [DataSnapshot] else { return }
                 for userSnap in userArr {
                     if userSnap.key == currentUserId { continue }
                     
@@ -250,17 +250,17 @@ extension RightMenuViewController: UITableViewDataSource {
                 #endif
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_right_menu", label: "cancel_block", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_right_menu", label: "cancel_block")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_right_menu", label: "cancel_block")
             } else if position == 1 {
                 self.updateBlockUser(blockID: user.id)
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_right_menu", label: "touch_block", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_right_menu", label: "touch_block")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_right_menu", label: "touch_block")
             }
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home", action: "home_right_menu", label: "message_confirm_block", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home", action: "home_right_menu", label: "message_confirm_block")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home", action: "home_right_menu", label: "message_confirm_block")
     }
     
     func updateBlockUser(blockID: String) {

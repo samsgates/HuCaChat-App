@@ -31,7 +31,7 @@ class SongListCollectionCell: UICollectionViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: NSNotification.Name(rawValue: kNotificationRefreshDataMusic), object: nil)
     }
     
-    func actRotateImage(_ notification: Notification) {
+    @objc func actRotateImage(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             if let position = userInfo["position"] as? Int {
                 self.playingIndex = position
@@ -39,7 +39,7 @@ class SongListCollectionCell: UICollectionViewCell {
         }
     }
     
-    func refreshData() {
+    @objc func refreshData() {
         self.tableView.reloadData()
     }
 }

@@ -63,7 +63,7 @@ class BlockUsersCell: SwipeCell {
         imgAvatar.clipsToBounds = true
     }
     
-    func tappedContentView(tap: UITapGestureRecognizer) {
+    @objc func tappedContentView(tap: UITapGestureRecognizer) {
         self.delegateBlock?.tappedContentView(myIndex: self.myIndex)
     }
     

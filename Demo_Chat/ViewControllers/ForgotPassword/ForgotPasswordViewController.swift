@@ -47,7 +47,7 @@ class ForgotPasswordViewController: BaseViewController {
         gesture.isEnabled = false
     }
     
-    func tappedScreen() {
+    @objc func tappedScreen() {
         txtEmail.resignFirstResponder()
         gesture.isEnabled = false
     }
@@ -61,7 +61,7 @@ class ForgotPasswordViewController: BaseViewController {
             return;
         }
         
-        FIRAuth.auth()?.sendPasswordReset(withEmail: txtEmail.text!, completion: { (error) in
+        Auth.auth().sendPasswordReset(withEmail: txtEmail.text!, completion: { (error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
@@ -99,7 +99,7 @@ extension ForgotPasswordViewController: UITextFieldDelegate {
         
         if textField == self.txtEmail {
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "user", action: "forgot_password", label: "input_email", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "user", action: "forgot_password", label: "input_email")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "user", action: "forgot_password", label: "input_email")
         }
         
         return true

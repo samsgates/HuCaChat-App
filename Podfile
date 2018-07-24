@@ -46,6 +46,10 @@ def demo_chat_frameworks
     #start - add pod support music function
     pod 'FMDB'
     #end
+    
+    #start - add add support layout UI
+    pod 'SnapKit', '~> 4.0.0'
+    #end
 end
 
 target 'HuCaChat_Dev' do

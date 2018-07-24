@@ -147,7 +147,7 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             print("adViewDidReceiveAd")
         #endif
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "adMob", action: "banner_view", label: "view", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "adMob", action: "banner_view", label: "view")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "adMob", action: "banner_view", label: "view")
     }
     
     func adViewDidDismissScreen(_ bannerView: GADBannerView) {
@@ -173,7 +173,7 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             print("adViewWillLeaveApplication")
         #endif
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "adMob", action: "banner_view", label: "click", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "adMob", action: "banner_view", label: "click")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "adMob", action: "banner_view", label: "click")
     }
     
     //MARK:- GADInterstitialDelegate
@@ -182,7 +182,7 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             print("interstitialDidReceiveAd")
         #endif
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "adMob", action: "interstitial", label: "view", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "adMob", action: "interstitial", label: "view")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "adMob", action: "interstitial", label: "view")
     }
     
     func interstitialDidDismissScreen(_ ad: GADInterstitial) {

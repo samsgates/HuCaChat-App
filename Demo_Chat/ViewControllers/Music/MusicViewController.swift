@@ -68,7 +68,7 @@ class MusicViewController: BaseViewController {
         }
     }
     
-    func refreshData() {
+    @objc func refreshData() {
         LocalDB.shared().getMusicInLocalDB { (musics) in
             if let musics = musics {
                 arrSong = musics
@@ -115,16 +115,16 @@ class MusicViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameMusicScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: #imageLiteral(resourceName: "icon_search"), rightSelector: #selector(self.actSearch(btn:)), isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func actSearch(btn: UIButton) {
+    @objc func actSearch(btn: UIButton) {
         let searchMusicVC = self.storyboard?.instantiateViewController(withIdentifier: "SearchMusicVC") as! SearchMusicViewController
         self.navigationController?.pushViewController(searchMusicVC, animated: false)
     }
     
-    func selectSong(_ notification: Notification) {
+    @objc func selectSong(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             if let position = userInfo["position"] as? Int {
                 if position != self.position {
@@ -178,7 +178,7 @@ class MusicViewController: BaseViewController {
             isPlaying = false
             
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "music", action: "pause", label: "", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "music", action: "pause", label: "")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "music", action: "pause", label: "")
         } else {
             isPlaying = true
             avAudio.play()
@@ -190,7 +190,7 @@ class MusicViewController: BaseViewController {
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(playingSong), userInfo: nil, repeats: true)
             
             AnalyticsHelper.shared.sendGoogleAnalytic(category: "music", action: "play", label: "", value: nil)
-            AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "music", action: "play", label: "")
+            AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "music", action: "play", label: "")
         }
         
         let userInfo: [AnyHashable: Any] = [
@@ -222,7 +222,7 @@ class MusicViewController: BaseViewController {
         }
     }
     
-    func playingSong() {
+    @objc func playingSong() {
         sldTime.value = Float(avAudio.currentTime)
         self.convertTimingToText(avAudio.currentTime, label: self.lblRunningTime)
     }
@@ -239,7 +239,7 @@ class MusicViewController: BaseViewController {
         self.actionPlaySong(false)
     }
     
-    func playAtSelectedTime() {
+    @objc func playAtSelectedTime() {
         self.actionPlaySong(avAudio.isPlaying)
         let selectedTime = Double(sldTime.value)
         avAudio.currentTime = selectedTime
@@ -271,7 +271,7 @@ class MusicViewController: BaseViewController {
         self.changeSong()
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "music", action: "next", label: "", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "music", action: "next", label: "")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "music", action: "next", label: "")
     }
     
     @IBAction func actPervSong(_ sender: AnyObject) {
@@ -285,7 +285,7 @@ class MusicViewController: BaseViewController {
         self.changeSong()
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "music", action: "previous", label: "", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "music", action: "previous", label: "")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "music", action: "previous", label: "")
     }
     
     @IBAction func dragToTimeOfSong(_ sender: AnyObject) {

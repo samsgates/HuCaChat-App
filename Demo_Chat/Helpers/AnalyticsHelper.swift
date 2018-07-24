@@ -53,7 +53,7 @@ class AnalyticsHelper: NSObject {
     }
     
     func sendFirebaseAnalytic(event: String, category: String, action: String, label: String) {
-        Analytics.logEvent(withName: event, parameters: [
+        Analytics.logEvent(event, parameters: [
             "Category": category as NSObject,
             "Action": action as NSObject,
             "Label": label as NSObject

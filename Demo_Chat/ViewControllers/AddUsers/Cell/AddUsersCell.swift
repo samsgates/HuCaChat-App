@@ -84,7 +84,7 @@ class AddUsersCell: UITableViewCell {
         vStatus.layer.cornerRadius = 5
     }
     
-    func tappedContentView(tap: UITapGestureRecognizer) {
+    @objc func tappedContentView(tap: UITapGestureRecognizer) {
         self.delegate?.tappedCheckView(myIndex: self.myIndex)
     }
     

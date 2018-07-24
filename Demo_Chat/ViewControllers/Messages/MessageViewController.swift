@@ -310,14 +310,14 @@ class MessageViewController: BaseViewController {
         self.cstTVMessageOffsetHeight.constant = 35
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "send_message", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "send_message")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "send_message")
     }
     
     @IBAction func actAttach(_ sender: Any) {
         showAlertPhoto()
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "choose_image", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "choose_image")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "choose_image")
     }
     
     func sendMessageToFirebase(type: MessageType, content: String, img_width: Int, img_height: Int, img_name: String) {
@@ -364,7 +364,7 @@ class MessageViewController: BaseViewController {
             let openCamera = UIAlertAction(title: NSLocalizedString("h_take_a_new_photo", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "take_a_new_photo", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "take_a_new_photo")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "take_a_new_photo")
                 
                 self.imgPickerVC?.sourceType = .camera
                 self.imgPickerVC?.isEditing = true
@@ -374,7 +374,7 @@ class MessageViewController: BaseViewController {
             let openPhotoLibrary = UIAlertAction(title: NSLocalizedString("h_choose_from_library", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "choose_from_library", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "choose_from_library")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "choose_from_library")
                 
                 self.imgPickerVC?.sourceType = .photoLibrary
                 self.imgPickerVC?.isEditing = true
@@ -385,7 +385,7 @@ class MessageViewController: BaseViewController {
             let cancel = UIAlertAction(title: NSLocalizedString("h_cancel", ""), style: .cancel, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "cancel", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "cancel")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "cancel")
             })
             self.showAlertSheet(title: kAppName, msg: NSLocalizedString("h_please_choose", ""), actions: [cancel, openPhotoLibrary, openCamera])
         } else {
@@ -543,7 +543,7 @@ extension MessageViewController: UITableViewDataSource, UITableViewDelegate {
                 loadData(lastKey: lastMessageKey)
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "home_and_group", action: "chat", label: "load_more_message", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "home_and_group", action: "chat", label: "load_more_message")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "home_and_group", action: "chat", label: "load_more_message")
             } else {
                 refreshControl.endRefreshing()
             }
@@ -566,7 +566,7 @@ extension MessageViewController: PhotoChatCellDelegate {
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "chat_and_group", action: "chat", label: "detail_image", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "chat_and_group", action: "chat", label: "detail_image")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "chat_and_group", action: "chat", label: "detail_image")
     }
 }
 
@@ -587,7 +587,7 @@ extension MessageViewController: ChatCellDelegate {
                         #endif
                         
                         AnalyticsHelper.shared.sendGoogleAnalytic(category: "chat_and_group", action: "delete_message", label: "touch_cancel", value: nil)
-                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "chat_and_group", action: "delete_message", label: "touch_cancel")
+                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "chat_and_group", action: "delete_message", label: "touch_cancel")
                     } else if position == 1 {
                         if message.message_type == .Photo {
                             if let img_name = message.img_name {
@@ -604,7 +604,7 @@ extension MessageViewController: ChatCellDelegate {
                         self.messageChannel.child(message.message_id).removeValue()
                         
                         AnalyticsHelper.shared.sendGoogleAnalytic(category: "chat_and_group", action: "delete_message", label: "touch_delete", value: nil)
-                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "chat_and_group", action: "delete_message", label: "touch_delete")
+                        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "chat_and_group", action: "delete_message", label: "touch_delete")
                     }
                 }
             }
@@ -642,7 +642,7 @@ extension MessageViewController: UITextViewDelegate {
         let newSize = NSString(string: msgContent!).boundingRect(
             with        : CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT)),
             options     : [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes  : [NSFontAttributeName : textView.font!],
+            attributes  : [NSAttributedStringKey.font : textView.font!],
             context     : nil)
         let newTVHeight = max(newSize.size.height + 15, fixedHeight)
         cstTVMessageOffsetHeight.constant = newTVHeight
@@ -725,16 +725,19 @@ extension MessageViewController: UINavigationControllerDelegate, UIImagePickerCo
         let imgWidth = Int(img.size.width)
         let imgHeight = Int(img.size.height)
         
-        if let data = UIImageJPEGRepresentation(img, 0.07) {
-            let metadata = FIRStorageMetadata()
+        if let imgData = UIImageJPEGRepresentation(img, 0.07) {
+            let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
             let imgName = "\(NSDate()).jpg"
-            self.storageLocal.child("message").child(conversationKey).child(imgName).put(data, metadata: metadata, completion: { (dataUpload, error) in
-                if dataUpload != nil {
-                    if let content = dataUpload?.downloadURL()?.absoluteString {
-                        self.sendMessageToFirebase(type: .Photo, content: content, img_width: imgWidth, img_height: imgHeight, img_name: imgName)
+            self.storageLocal.child("message").child(conversationKey).child(imgName).putData(imgData, metadata: metadata, completion: { (metadata, error) in
+                metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                    if let error = error {
+                        EZAlertController.alert(kAppName, message: error.localizedDescription)
+                        return
                     }
-                }
+                    let content = url?.absoluteString ?? ""
+                    self.sendMessageToFirebase(type: .Photo, content: content, img_width: imgWidth, img_height: imgHeight, img_name: imgName)
+                })
             })
         }
         

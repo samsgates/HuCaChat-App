@@ -62,11 +62,11 @@ class DetailImageViewController: BaseViewController {
         }
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "chat_and_group", action: "detail_image", label: "back", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "chat_and_group", action: "detail_image", label: "back")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "chat_and_group", action: "detail_image", label: "back")
     }
 
     override func didReceiveMemoryWarning() {

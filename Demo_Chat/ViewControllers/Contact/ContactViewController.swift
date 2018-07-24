@@ -45,7 +45,7 @@ class ContactViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameContactScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -53,7 +53,7 @@ class ContactViewController: BaseViewController {
         let currentUserId = self.currentuserID
         self.ref.child("Users").observeSingleEvent(of: .value, with: { (snap) in
             if !(snap.value is NSNull) {
-                guard let userArr = snap.children.allObjects as? [FIRDataSnapshot] else { return }
+                guard let userArr = snap.children.allObjects as? [DataSnapshot] else { return }
                 for userSnap in userArr {
                     if userSnap.key == currentUserId { continue }
                     
@@ -108,7 +108,7 @@ class ContactViewController: BaseViewController {
                     }
                     
                     if !isExit {
-                        if snap.key != FIRAuth.auth()?.currentUser?.uid {
+                        if snap.key != Auth.auth().currentUser?.uid {
                             if let user = UserModel(uid: snap.key, jsonData: userDict) {
                                 self.users.append(user)
                                 self.tableView.reloadData()
@@ -257,7 +257,7 @@ extension ContactViewController: ContactCellDelegate {
     
     func createConversationWith(user: UserModel) {
         let currentUID = self.currentuserID
-        guard let currDisplayName = FIRAuth.auth()?.currentUser?.displayName else { return }
+        guard let currDisplayName = Auth.auth().currentUser?.displayName else { return }
         
         let newRoomChatRef = self.ref.child("Conversations").childByAutoId()
         let conversationData = [

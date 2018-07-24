@@ -53,16 +53,16 @@ struct HCBasicKaraokeLyricParser: HCKaraokeLyricParser {
                     let tag = row[row.characters.index(row.startIndex, offsetBy: 1)...row.characters.index(row.startIndex, offsetBy: 2)]
                     switch tag {
                     case "ti":
-                        title = text
+                        title = String(text)
                         break
                     case "ar":
-                        artist = text
+                        artist = String(text)
                         break
                     case "al":
-                        album = text
+                        album = String(text)
                         break
                     case "by":
-                        by = text
+                        by = String(text)
                         break
                     default:
                         #if DEBUG

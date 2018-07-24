@@ -163,7 +163,7 @@ class LoginViewController: BaseViewController {
                     }
                     if let emailStr = data?.user.email {
                         email = emailStr
-                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user?.uid ?? "", "email": email, "pass": ""])
+                        Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data?.user.uid ?? "", "email": email, "pass": ""])
                     
                         let currInstallation: NCMBInstallation = NCMBInstallation.current()
                         self.appDelegate.handleInstallation(currInstallation: currInstallation)
@@ -204,14 +204,14 @@ class LoginViewController: BaseViewController {
             return;
         }
         
-        Auth.auth().signIn(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (user, error) in
+        Auth.auth().signIn(withEmail: txtEmail.text!, password: txtPassword.text!, completion: { (data, error) in
             if let error = error {
                 self.stopLoading()
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
             }
             
-            if let _ = user {
-                Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": user?.uid ?? "", "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
+            if let data = data {
+                Helper.shared.saveUserDefault(key: kUserInfo, value: ["user_id": data.user.uid ?? "", "email": self.txtEmail.text ?? "", "pass": self.txtPassword.text ?? ""])
                 
                 let currInstallation: NCMBInstallation = NCMBInstallation.current()
                 self.appDelegate.handleInstallation(currInstallation: currInstallation)

@@ -108,7 +108,7 @@ final class HCKaraokeLyricLabel: UILabel, CAAnimationDelegate {
         var val:CGFloat = 0
         for k in sortedKeys {
             let str = lyricSegment[k]!
-            let strWidth = str.size(attributes: [NSFontAttributeName:self.font]).width
+            let strWidth = str.size(withAttributes: [NSAttributedStringKey.font:self.font]).width
             val += strWidth
             values.append(val)
         }

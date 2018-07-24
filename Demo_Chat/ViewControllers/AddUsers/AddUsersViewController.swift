@@ -54,14 +54,14 @@ class AddUsersViewController: BaseViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameAddUsersScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: #imageLiteral(resourceName: "icon_check"), rightSelector: #selector(self.actAddUsers(btn:)), isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "add_users", label: "back", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "add_users", label: "back")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "add_users", label: "back")
     }
     
-    func actAddUsers(btn: UIBarButtonItem) {
+    @objc func actAddUsers(btn: UIBarButtonItem) {
         if selected.isEmpty {
             EZAlertController.alert(kAppName, message: NSLocalizedString("h_sms_select_users", ""))
         } else {
@@ -76,14 +76,14 @@ class AddUsersViewController: BaseViewController {
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "add_users", label: "add", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "add_users", label: "add")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "add_users", label: "add")
     }
     
     func setupData(completion:(_ success:Bool) -> Void) {
         let currentUserId = self.currentuserID
         self.ref.child("Users").observeSingleEvent(of: .value, with: { (snap) in
             if !(snap.value is NSNull) {
-                guard let userArr = snap.children.allObjects as? [FIRDataSnapshot] else { return }
+                guard let userArr = snap.children.allObjects as? [DataSnapshot] else { return }
                 for userSnap in userArr {
                     if userSnap.key == currentUserId { continue }
                     
@@ -138,7 +138,7 @@ class AddUsersViewController: BaseViewController {
                     }
                     
                     if !isExit {
-                        if snap.key != FIRAuth.auth()?.currentUser?.uid {
+                        if snap.key != Auth.auth().currentUser?.uid {
                             if let user = UserModel(uid: snap.key, jsonData: userDict) {
                                 self.users.append(user)
                                 self.tableView.reloadData()
@@ -276,6 +276,6 @@ extension AddUsersViewController: AddUsersCellDelegate {
         self.tableView.reloadRows(at: [myIndex], with: .none)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "add_users", label: "select_user", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "add_users", label: "select_user")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "add_users", label: "select_user")
     }
 }

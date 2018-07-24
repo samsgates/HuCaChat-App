@@ -110,7 +110,7 @@ class MoreViewController: BaseViewController {
         vPicker.isHidden = true
     }
     
-    func refreshDidFinishedLanguage() {
+    @objc func refreshDidFinishedLanguage() {
         self.title = Define.shared.getNameMoreScreen().uppercased()
         self.hStatusMessage.text = NSLocalizedString("h_status_message", "")
         self.hOnlineStatus.text = NSLocalizedString("h_online_status", "")
@@ -214,7 +214,7 @@ class MoreViewController: BaseViewController {
         self.navigationController?.pushViewController(statusMessageVC, animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "status_message", label: "update", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "status_message", label: "update")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "status_message", label: "update")
     }
     
     @IBAction func actOnlineStatus(_ sender: Any) {
@@ -261,7 +261,7 @@ class MoreViewController: BaseViewController {
         self.navigationController?.pushViewController(blockUsersVC, animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "block_user", label: "touch", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "block_user", label: "touch")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "block_user", label: "touch")
     }
     
     @IBAction func actGames(_ sender: Any) {
@@ -269,7 +269,7 @@ class MoreViewController: BaseViewController {
         self.navigationController?.pushViewController(aboutVC, animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "game", label: "touch", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "game", label: "touch")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "game", label: "touch")
     }
     
     @IBAction func actCancel(_ sender: Any) {
@@ -393,25 +393,25 @@ extension MoreViewController: UIPickerViewDelegate {
                 vStatus.backgroundColor = Theme.shared.color_Online()
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "online_status", label: "available", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "online_status", label: "available")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "online_status", label: "available")
                 break
             case 1:
                 vStatus.backgroundColor = Theme.shared.color_Away()
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "online_status", label: "away", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "online_status", label: "away")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "online_status", label: "away")
                 break
             case 2:
                 vStatus.backgroundColor = Theme.shared.color_Offline()
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "online_status", label: "offline", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "online_status", label: "offline")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "online_status", label: "offline")
                 break
             case 3:
                 vStatus.backgroundColor = Theme.shared.color_Busy()
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "online_status", label: "busy", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "online_status", label: "busy")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "online_status", label: "busy")
                 break
             default:
                 break
@@ -422,15 +422,15 @@ extension MoreViewController: UIPickerViewDelegate {
             switch row {
             case 0:
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "language", label: "english", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "language", label: "english")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "language", label: "english")
                 break
             case 1:
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "language", label: "vietnamese", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "language", label: "vietnamese")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "language", label: "vietnamese")
                 break
             case 2:
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "more", action: "language", label: "japanese", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "more", action: "language", label: "japanese")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "more", action: "language", label: "japanese")
                 break
             default:
                 break

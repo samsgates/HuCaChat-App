@@ -50,7 +50,7 @@ class SearchMusicViewController: UIViewController {
         setupNavigationBar(vc: self, title: Define.shared.getNameSearchMusicScreen().uppercased(), leftText: nil, leftImg: #imageLiteral(resourceName: "arrow_back"), leftSelector: #selector(self.actBack(btn:)), rightText: nil, rightImg: nil, rightSelector: nil, isDarkBackground: true, isTransparent: true)
     }
     
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
     }
     
@@ -113,7 +113,7 @@ extension SearchMusicViewController: UISearchResultsUpdating {
         }
     }
     
-    func searchMusic(_ hostName: String) {
+    @objc func searchMusic(_ hostName: String) {
         if searchText == "" {return}
         self.pleaseWait()
         MainDB.shared.searchMusic(searchText: searchText, hostName: hostName, responses: { (musics) in

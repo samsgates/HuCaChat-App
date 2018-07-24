@@ -15,6 +15,7 @@ class MapViewController: BaseViewController {
     let manager = SocketManager(socketURL: URL(string: SERVER_URL)!, config: [.log(true), .forcePolling(true), .compress])
     var markerDict:[String:GMSMarker] = [:]
     let locationHelper = LocationHelper()
+    var socket: SocketIOClient!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +58,7 @@ class MapViewController: BaseViewController {
     }
     
     func startSocketIO() {
-        let socket = self.manager.defaultSocket
+        socket = self.manager.defaultSocket
         socket.on(clientEvent: .connect) { (data, ack) in
             #if DEBUG
                 print("Client connected")
@@ -144,6 +145,6 @@ extension MapViewController: LocationHelperDelegate {
     @objc func privateLocation() {
         guard let id = self.appDelegate.currUser?.id else { return }
         guard let displayName = self.appDelegate.currUser?.display_name else { return }
-        self.socket.emit("location", ["\(id)_\(displayName)", 0, 0])
+        socket.emit("location", ["\(id)_\(displayName)", 0, 0])
     }
 }

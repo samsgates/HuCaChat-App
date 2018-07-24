@@ -38,7 +38,7 @@ class SongTableCell: UITableViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(actRotateImage(_:)), name: NSNotification.Name(rawValue: kNotificationRotateImage), object: nil)
     }
     
-    func actRotateImage(_ notification: Notification) {
+    @objc func actRotateImage(_ notification: Notification) {
         if let userInfo = notification.userInfo {
             if let position = userInfo["position"] as? Int {
                 if position == self.position {

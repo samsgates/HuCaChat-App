@@ -83,7 +83,7 @@ class CreateGroupViewController: BaseViewController {
         gesture.isEnabled = false
     }
     
-    func tappedScreen() {
+    @objc func tappedScreen() {
         txtNameGroup.resignFirstResponder()
         gesture.isEnabled = false
     }
@@ -105,11 +105,11 @@ class CreateGroupViewController: BaseViewController {
         btn.clipsToBounds = true
     }
 
-    func actBack(btn: UIButton) {
+    @objc func actBack(btn: UIButton) {
         _ = navigationController?.popViewController(animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "back", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "back")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "back")
     }
     
     @IBAction func actAddUsers(_ sender: Any) {
@@ -118,11 +118,11 @@ class CreateGroupViewController: BaseViewController {
         self.navigationController?.pushViewController(addUsersVC, animated: true)
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "add_user_to_group", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "add_user_to_group")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "add_user_to_group")
     }
     
     @IBAction func actChangeAvatar(_ sender: Any) {
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "input_avatar")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "input_avatar")
         
         self.showCamera()
     }
@@ -135,7 +135,7 @@ class CreateGroupViewController: BaseViewController {
         }
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "cancel", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "cancel")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "cancel")
     }
     
     @IBAction func actCreate(_ sender: Any) {
@@ -147,7 +147,7 @@ class CreateGroupViewController: BaseViewController {
         self.pleaseWait()
         
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "create", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "create")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "create")
         
         self.uploadAvatarToFirebase(completionHandler: { (value) in
             var photoStr = ""
@@ -225,7 +225,7 @@ extension CreateGroupViewController {
             let openCamera = UIAlertAction(title: NSLocalizedString("h_take_a_new_photo", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "take_a_new_photo", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "take_a_new_photo")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "take_a_new_photo")
                 
                 self.imagePicker?.sourceType = .camera
                 self.imagePicker?.isEditing = false
@@ -235,7 +235,7 @@ extension CreateGroupViewController {
             let openPhotoLibrary = UIAlertAction(title: NSLocalizedString("h_choose_from_library", ""), style: .default, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "choose_from_library", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "choose_from_library")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "choose_from_library")
                 
                 self.imagePicker?.sourceType = .photoLibrary
                 self.imagePicker?.isEditing = false
@@ -245,7 +245,7 @@ extension CreateGroupViewController {
             let cancel = UIAlertAction(title: NSLocalizedString("h_cancel", ""), style: .cancel, handler: { (_) in
                 
                 AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "cancel", value: nil)
-                AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "cancel")
+                AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "cancel")
             })
             
             self.showAlertSheet(title: kAppName, msg: NSLocalizedString("h_please_choose", ""), actions: [cancel,openPhotoLibrary,openCamera])
@@ -317,10 +317,10 @@ extension CreateGroupViewController: UINavigationControllerDelegate, UIImagePick
     }
     
     func uploadAvatarToFirebase(completionHandler: @escaping(String) -> Void) {
-        if let data = self.imgDataSelected as? Data {
-            let metadata = FIRStorageMetadata()
+        if let imgData = self.imgDataSelected as Data? {
+            let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
-            self.storageLocal.child("group").child("\(NSDate()).jpg").put(data, metadata: metadata, completion: { (dataUpload, error) in
+            self.storageLocal.child("group").child("\(NSDate()).jpg").putData(imgData, metadata: metadata, completion: { (metadata, error) in
                 
                 // Up hình lên storage bị lỗi
                 if let error = error {
@@ -333,11 +333,15 @@ extension CreateGroupViewController: UINavigationControllerDelegate, UIImagePick
                 }
                 
                 // Up hình thành công
-                if dataUpload != nil {
-                    if let urlAvatar = dataUpload?.downloadURL()?.absoluteString {
-                        completionHandler(urlAvatar)
+                metadata?.storageReference?.downloadURL(completion: { (url, error) in
+                    if let error = error {
+                        EZAlertController.alert(kAppName, message: error.localizedDescription)
+                        completionHandler("")
+                        return
                     }
-                }
+                    let urlAvatar = url?.absoluteString ?? ""
+                    completionHandler(urlAvatar)
+                })
             })
         }
     }
@@ -353,7 +357,7 @@ extension CreateGroupViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         gesture.isEnabled = true
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "group", action: "create_group", label: "input_group_name", value: nil)
-        AnalyticsHelper.shared.sendFirebaseAnalytic(event: kFIREventSelectContent, category: "group", action: "create_group", label: "input_group_name")
+        AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "group", action: "create_group", label: "input_group_name")
         
         return true
     }

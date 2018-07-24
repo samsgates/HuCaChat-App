@@ -54,13 +54,10 @@ import UIKit
             let context = UIGraphicsGetCurrentContext()!
             context.saveGState()
             
-            let textFontAttributes = [
-                NSFontAttributeName: font,
-                NSForegroundColorAttributeName: UIColor.white,
-                ] as [String : Any]
-            let size = couponText.size(attributes: textFontAttributes)
+            let textFontAttributes = [NSAttributedStringKey.font: self.font, NSAttributedStringKey.foregroundColor: UIColor.white] as [NSAttributedStringKey : Any]
+            let size = couponText.size(withAttributes: textFontAttributes)
             context.translateBy(x: rect.size.width / 2, y: rect.size.height / 2)
-            context.rotate(by: -CGFloat(M_PI_4))
+            context.rotate(by: -CGFloat(Double.pi / 4))
             couponText.draw(at: CGPoint(x: -size.width / 2, y: -size.height), withAttributes: textFontAttributes)
             context.restoreGState()
         } else {

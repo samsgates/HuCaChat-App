@@ -153,7 +153,7 @@ class CRNotification: UIView {
 	}
 	
 	/// Animates out the notification
-	func dismissNotification() {
+	@objc func dismissNotification() {
 		
 		UIView.animate(withDuration: 0.1, delay: 0.0, options: UIViewAnimationOptions(), animations: {
 			self.frame.origin.y = self.frame.origin.y + 5
