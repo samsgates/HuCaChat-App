@@ -197,7 +197,9 @@ extension AppDelegate {
                     return
                 }
                 if granted {
-                    UIApplication.shared.registerForRemoteNotifications()
+                    DispatchQueue.main.async {
+                        UIApplication.shared.registerForRemoteNotifications()
+                    }
                 }
             }
         } else {

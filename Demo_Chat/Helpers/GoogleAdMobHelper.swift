@@ -27,19 +27,24 @@ struct BannerViewSize {
     static var height: CGFloat = CGFloat(UIDevice.current.userInterfaceIdiom == .pad ? 90 : 50)
 }
 
+protocol GoogleAdMobHelperDelegate: class {
+    func didFinishedLoadAd(isDisplay: Bool)
+}
+
 class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegate {
     static let shared: GoogleAdMobHelper = {
         let instance = GoogleAdMobHelper()
         return instance
     }()
     
-    private var isBannerViewDisplay = false
+    var isBannerViewDisplay = false
     private var isInitializeBannerView = false
     private var isInitializeInterstitial = false
     private var isBannerLiveID = false
     private var isInterstitialLiveID = false
     private var interstitialAds: GADInterstitial!
     private var bannerView: GADBannerView!
+    weak var delegate: GoogleAdMobHelperDelegate?
     
     func initializeBannerView(isLiveUnitID: Bool) {
         self.isInitializeBannerView = true
@@ -52,7 +57,6 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(createBannerView), object: nil)
             self.perform(#selector(createBannerView), with: nil, afterDelay: 0.5)
         } else {
-            isBannerViewDisplay = true
             bannerView = GADBannerView(frame: CGRect(x: 0, y: -(BannerViewSize.screenHeight), width: BannerViewSize.screenWidth, height: BannerViewSize.height))
             if self.isBannerLiveID == false {
                 self.bannerView.adUnitID = GoogleAdsUnitID.Test.strBannerAdsID
@@ -62,7 +66,7 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             
             self.bannerView.rootViewController = UIApplication.shared.keyWindow?.rootViewController
             self.bannerView.delegate = self
-            self.bannerView.backgroundColor = .gray
+            self.bannerView.backgroundColor = .clear
             self.bannerView.load(GADRequest())
             UIApplication.shared.keyWindow?.addSubview(bannerView)
         }
@@ -70,7 +74,6 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
     
     //MARK:- Show/Hide banner view
     func showBannerView() {
-        isBannerViewDisplay = true
         if isInitializeBannerView == false {
             #if DEBUG
                 print("First initalize banner view")
@@ -79,22 +82,27 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
             #if DEBUG
                 print("isBannerViewCreate: true")
             #endif
-            UIView.animate(withDuration: 0.3, animations: { 
+            self.bannerView.isHidden = true
+            UIView.animate(withDuration: 0.3, animations: {
                 self.bannerView.frame = CGRect(x: 0, y: BannerViewSize.screenHeight, width: BannerViewSize.screenWidth, height: BannerViewSize.height)
+            }, completion: { (isOK) in
+                self.bannerView.isHidden = false
             })
         }
     }
     
     func hideBannerView() {
-        isBannerViewDisplay = false
         if self.bannerView != nil {
-            UIView.animate(withDuration: 0.3, animations: { 
+            self.bannerView.isHidden = true
+            UIView.animate(withDuration: 0.3, animations: {
                 self.bannerView.frame = CGRect(x: 0, y: -(BannerViewSize.screenHeight), width: BannerViewSize.screenWidth, height: BannerViewSize.height)
+            }, completion: { (isOK) in
+                self.bannerView.isHidden = false
             })
         }
     }
     
-    @objc private func showBanner() {
+    private func showBanner() {
         if self.bannerView != nil && isBannerViewDisplay == true {
             self.bannerView.isHidden = false
         }
@@ -146,8 +154,15 @@ class GoogleAdMobHelper: NSObject, GADInterstitialDelegate, GADBannerViewDelegat
         #if DEBUG
             print("adViewDidReceiveAd")
         #endif
+        isBannerViewDisplay = true
+        self.delegate?.didFinishedLoadAd(isDisplay: true)
         AnalyticsHelper.shared.sendGoogleAnalytic(category: "adMob", action: "banner_view", label: "view", value: nil)
         AnalyticsHelper.shared.sendFirebaseAnalytic(event: AnalyticsEventSelectContent, category: "adMob", action: "banner_view", label: "view")
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+        isBannerViewDisplay = false
+        self.delegate?.didFinishedLoadAd(isDisplay: false)
     }
     
     func adViewDidDismissScreen(_ bannerView: GADBannerView) {

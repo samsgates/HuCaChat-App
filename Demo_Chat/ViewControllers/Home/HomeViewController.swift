@@ -75,8 +75,8 @@ class HomeViewController: BaseViewController {
     }
     
     func setupView() {
+        self.automaticallyAdjustsScrollViewInsets = false
         self.setupNavigation()
-        
         guard let revealVC = self.revealViewController() else { return }
         revealVC.panGestureRecognizer()
         revealVC.tapGestureRecognizer()

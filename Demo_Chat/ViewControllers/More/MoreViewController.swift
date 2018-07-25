@@ -61,8 +61,14 @@ class MoreViewController: BaseViewController {
         AnalyticsHelper.shared.setFirebaseAnalytic(screenName: "more_screen", screenClass: classForCoder.description())
         
         GoogleAdMobHelper.shared.showBannerView()
-        self.cstViewOffsetTop.constant = 50
-        self.cstViewOffsetHeight.constant = -100
+        if GoogleAdMobHelper.shared.isBannerViewDisplay {
+            self.cstViewOffsetTop.constant = 50
+            self.cstViewOffsetHeight.constant = -100
+        } else {
+            self.cstViewOffsetTop.constant = 0
+            self.cstViewOffsetHeight.constant = 0
+        }
+        GoogleAdMobHelper.shared.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(refreshDidFinishedLanguage), name: NSNotification.Name(rawValue: kNotificationRefreshLanguage), object: nil)
     }
@@ -356,6 +362,18 @@ extension MoreViewController: BottomMenuViewDelegate {
     
     func didSelectedBtnCheckOut(_: BottomMenuView!) {
         
+    }
+}
+
+extension MoreViewController: GoogleAdMobHelperDelegate {
+    func didFinishedLoadAd(isDisplay: Bool) {
+        if isDisplay {
+            self.cstViewOffsetTop.constant = 50
+            self.cstViewOffsetHeight.constant = -100
+        } else {
+            self.cstViewOffsetTop.constant = 0
+            self.cstViewOffsetHeight.constant = 0
+        }
     }
 }
 
