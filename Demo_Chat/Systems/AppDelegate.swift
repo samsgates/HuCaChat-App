@@ -43,8 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.backgroundColor = UIColor.white
         self.window?.makeKeyAndVisible()
         
-        GoogleAdMobHelper.shared.initializeBannerView(isLiveUnitID: true)
-        GoogleAdMobHelper.shared.initializeInterstitial(isLiveUnitID: true)
+        GoogleAdMobHelper.shared.initializeBannerView(isLiveUnitID: false)
+        GoogleAdMobHelper.shared.initializeInterstitial(isLiveUnitID: false)
         
         MainDB.shared.loadGenreList()
         if let _ = Helper.shared.getUserDefault(key: kAllowLocation) {} else {

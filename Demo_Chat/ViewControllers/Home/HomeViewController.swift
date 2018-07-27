@@ -16,12 +16,12 @@ class HomeViewController: BaseViewController {
     var users: [UserModel] = [UserModel]()
     var downloadingTasks = Dictionary <IndexPath, Operation>()
     var hidingNavBarHelper: HidingNavBarHelper?
+    var isShowAds: Bool = false
     
     lazy var downloadPhotoQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "Download avatar chat"
         queue.maxConcurrentOperationCount = 2
-        
         return queue
     }()
     
@@ -46,6 +46,11 @@ class HomeViewController: BaseViewController {
         bottomMenuView.currentIndex = 0
         
         hidingNavBarHelper?.viewWillAppear(animated)
+        if isShowAds {
+            DispatchQueue.main.async {
+                self.tableView.frame.size.height = self.tableView.frame.size.height - 50
+            }
+        }
         
         AnalyticsHelper.shared.setGoogleAnalytic(name: kGAIScreenName, value: "home_chat_screen")
         AnalyticsHelper.shared.setFirebaseAnalytic(screenName: "home_chat_screen", screenClass: classForCoder.description())
@@ -101,9 +106,8 @@ class HomeViewController: BaseViewController {
         tableView.allowsSelection = false
         tableView.allowsMultipleSelection = false
         DispatchQueue.main.async {
-            self.tableView.frame.size.height = self.tableView.frame.size.height - self.bottomMenuView.frame.size.height
+            self.tableView.frame.size.height = self.tableView.frame.size.height - 50
         }
-        
         hidingNavBarHelper = HidingNavBarHelper(viewController: self, scrollView: tableView)
     }
     
@@ -275,50 +279,57 @@ class HomeViewController: BaseViewController {
 
 extension HomeViewController: BottomMenuViewDelegate {
     func didSelectedBtnHome(_: BottomMenuView!) {
-    
+        isShowAds = false
     }
     
     func didSelectedBtnCalendar(_: BottomMenuView!) {
+        isShowAds = false
         let groupVC = self.storyboard?.instantiateViewController(withIdentifier: "GroupVC") as! GroupViewController
         self.navigationController?.pushViewController(groupVC, animated: false)
     }
     
     func didSelectedBtnCenter(_: BottomMenuView!) {
-    
+        isShowAds = false
     }
     
     func didSelectedBtnAlarm(_: BottomMenuView!) {
+        isShowAds = false
         let notificationVC = self.storyboard?.instantiateViewController(withIdentifier: "NotificationVC") as! NotificationViewController
         self.navigationController?.pushViewController(notificationVC, animated: false)
     }
     
     func didSelectedBtnSetting(_: BottomMenuView!) {
+        isShowAds = false
         let moreVC = self.storyboard?.instantiateViewController(withIdentifier: "MoreVC") as! MoreViewController
         self.navigationController?.pushViewController(moreVC, animated: false)
     }
     
     func didSelectedBtnContact(_: BottomMenuView!) {
+        isShowAds = false
         let contactVC = self.storyboard?.instantiateViewController(withIdentifier: "ContactVC") as! ContactViewController
         self.navigationController?.pushViewController(contactVC, animated: true)
     }
     
     func didSelectedBtnVideo(_: BottomMenuView!) {
+        isShowAds = false
         let mapVC = self.storyboard?.instantiateViewController(withIdentifier: "MapVC") as! MapViewController
         self.navigationController?.pushViewController(mapVC, animated: true)
     }
     
     func didSelectedBtnCamera(_: BottomMenuView!) {
+        isShowAds = false
         let musicVC = self.storyboard?.instantiateViewController(withIdentifier: "MusicVC") as! MusicViewController
         self.navigationController?.pushViewController(musicVC, animated: true)
     }
     
     func didSelectedBtnCheckIn(_: BottomMenuView!) {
+        isShowAds = false
         let pageMenuVC = self.storyboard?.instantiateViewController(withIdentifier: "PageMenuVC") as! PageMenuViewController
         self.navigationController?.pushViewController(pageMenuVC, animated: true)
     }
     
     func didSelectedBtnCheckOut(_: BottomMenuView!) {
-    
+        isShowAds = false
     }
 }
 
@@ -426,6 +437,9 @@ extension HomeViewController: ContactCellDelegate {
             Helper.shared.saveUserDefault(key: kShowAdMod, value: numShowAdMob)
             if numShowAdMob % 3 == 0 {
                 GoogleAdMobHelper.shared.showInterstitial()
+                isShowAds = true
+            } else {
+                isShowAds = false
             }
         } else {
             numShowAdMob += 1
