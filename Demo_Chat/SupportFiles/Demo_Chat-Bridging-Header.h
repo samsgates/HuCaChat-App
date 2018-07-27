@@ -14,7 +14,6 @@
     #import "GAILogger.h"
     #import "GAITrackedViewController.h"
     #import "GAITracker.h"
-
     #import "SWRevealViewController.h"
     #import "UIView+Helper.h"
     #import "GAITrackedViewController.h"

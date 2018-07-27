@@ -110,7 +110,7 @@ class LoginViewController: BaseViewController {
     }
     
     @IBAction func actTwitterLogin(_ sender: Any) {
-        Twitter.sharedInstance().logIn() { (session, error) in
+        Twitter.sharedInstance().logIn(with: self) { (session, error) in
             if let error = error {
                 EZAlertController.alert(kAppName, message: error.localizedDescription)
                 return

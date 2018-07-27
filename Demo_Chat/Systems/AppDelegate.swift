@@ -30,8 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.requestNotification(application: application)
         
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
-        Fabric.with([Crashlytics.self, Twitter.self])
+        Fabric.with([Crashlytics.self])
         AnalyticsHelper.shared.shareManage()
+        Twitter.sharedInstance().start(withConsumerKey: CONSUMER_KEY, consumerSecret: CONSUMER_SECRET)
         
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         self.window = UIWindow(frame: UIScreen.main.bounds)
